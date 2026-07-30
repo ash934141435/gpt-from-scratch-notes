@@ -19,16 +19,22 @@ Attention 完成 token 间交流，但还需要让每个 token 独立加工收�
 
 FFN 对所有位置使用同一套函数，但绝不把位置 0 的数拿给位置 1。残差连接则像保留原笔记：新结果是 `原笔记 + 加工建议`，即使加工分支暂时很差，原信息仍有直路。
 
-## 4. 视频关键片段与画面
+一个 Block 交替执行“通信”和“独立加工”，每个分支外都保留主路：
 
-- `84:45–86:53`（M109–M111）：逐 token FFN、Linear+ReLU 与结果改善。
-- `86:53–88:34`（M112–M114）：Block 交替通信/计算，直接堆深的优化困难。
-- `88:34–91:10`（M115–M118）：ResNet 类比、梯度高速公路与残差代码。
-- `91:10–92:44`（M119–M120）：输出投影、`C→4C→C` 和结果。
+```mermaid
+flowchart LR
+    X["输入 x"] --> A["Multi-Head Attention<br/>token 间交流"]
+    X --> ADD1["残差相加"]
+    A --> ADD1
+    ADD1 --> F["FeedForward<br/>逐 token 加工"]
+    ADD1 --> ADD2["残差相加"]
+    F --> ADD2
+    ADD2 --> Y["Block 输出 [B,T,C]"]
+```
 
-![残差连接示意](../../07-Transformer-Block/assets/crops/01-29-30-residual-diagram.png)
+两条分支最终都回到宽度 C，所以可以与主路逐项相加。Block 输出 Shape 不变，下一层才能继续接收同一种接口。
 
-## 5. 跟着完成最小代码
+## 4. 跟着完成最小代码
 
 FFN：
 
@@ -62,7 +68,7 @@ python course/13-FeedForward-Block与残差/code/V7-feed-forward.py
 python course/13-FeedForward-Block与残差/code/V8-residual-connection.py
 ```
 
-## 6. 每行代码在做什么
+## 5. 每行代码在做什么
 
 - 第一个 Linear 把每个 token 从 C 扩到 4C，提供更宽的中间计算空间。
 - ReLU 把负值变 0，使多层不再等价于一个线性变换。
@@ -73,7 +79,7 @@ python course/13-FeedForward-Block与残差/code/V8-residual-connection.py
 
 多头 Attention 末尾的 output projection 把拼接的头混合回统一 C；FFN 末尾投影把 4C 压回 C。两者都为残差 Shape 对齐服务，但参数不共享。
 
-## 7. Shape 变化卡片
+## 6. Shape 变化卡片
 
 ```text
 x                              [B,T,C]
@@ -87,7 +93,7 @@ x + ffwd                       [B,T,C]
 
 哪些混合 token：Attention 的 `[T,T] @ V`。哪些不混合 token：Linear、ReLU、FFN，它们只沿每个位置的 C 运算。
 
-## 8. 为什么这样设计
+## 7. 为什么这样设计
 
 若只有 Attention，token 可以加权复制和混合历史值，但逐位置的非线性变换能力有限。FFN 提供独立计算；交替堆叠让“交流后的结果”在下一层又能影响新的交流。
 
@@ -99,7 +105,15 @@ y = x + F(x)
 
 即使 F 分支的梯度很弱，x→y 的加法仍提供一条导数为 1 的直接路径。它不能保证训练成功，但显著缓解深层信号传递困难。
 
-## 9. 常见误解与报错
+视频用主干和旁路图强调，残差并不是用分支替换输入，而是把分支结果加回原信号：
+
+![残差连接的主路与计算分支](../../07-Transformer-Block/assets/crops/01-29-30-residual-diagram.png)
+
+*图：残差连接为数据和梯度保留直接通路（原视频 M116，01:29:30）*
+
+观察时沿着直线主路走一遍，再沿 F(x) 分支走一遍；两路在加法节点汇合。只保留分支输出就会失去这条“梯度高速公路”。
+
+## 8. 常见误解与报错
 
 - FFN 不是把整个序列展平后处理；它对每个 `[C]` 位置独立复用。
 - 4C 是常用 Transformer 设计，不是数学定律。
@@ -109,7 +123,7 @@ y = x + F(x)
 - ReLU 不混合 token；修改位置 0 不应影响 FFN 对位置 1 的输出。
 - 深层 loss 变差可能是优化问题，不应直接断定更多层一定更差。
 
-## 10. 完整示范
+## 9. 完整示范
 
 验证 FFN 不混合位置：
 
@@ -128,7 +142,7 @@ assert not torch.allclose(out[:, 0], changed_out[:, 0])
 assert torch.allclose(out[:, 1:], changed_out[:, 1:])
 ```
 
-## 11. 填空模仿
+## 10. 填空模仿
 
 ```python
 self.net = nn.Sequential(
@@ -145,7 +159,7 @@ def forward(self, x):
 
 参考答案：`4 * C`、`ReLU`、`4 * C`、`+`、`+`。
 
-## 12. 独立小任务
+## 11. 独立小任务
 
 1. 设 `B=2,T=8,C=32`，写出 FFN 每层 Shape；
 2. 运行 V7 并验证修改 token 0 不影响其他位置；
@@ -154,7 +168,7 @@ def forward(self, x):
 
 参考：真正混合 T 的是两个 MultiHeadAttention 调用内部；FFN、LayerNorm 和残差加法都不会跨 token 混合。
 
-## 13. 过关标准
+## 12. 过关标准
 
 - 能区分 Attention 的交流与 FFN 的逐 token 计算；
 - 能推出 `C→4C→C`；
@@ -163,13 +177,13 @@ def forward(self, x):
 - 能用 `x+F(x)` 与最小实验解释残差；
 - 能指出哪些操作混合 token，哪些不混合。
 
-## 14. 暂时不用懂什么
+## 13. 暂时不用懂什么
 
 暂时不用懂 GELU、SwiGLU、残差初始化理论和深度缩放规律。下一章只加入归一化，并确定它放在分支前还是后。
 
-## 15. 视频时间与 M 映射
+## 14. 原视频定位与 M 映射
 
-| M | 时间 | 本章用途 |
+| M | 原视频时间 | 本章用途 |
 |---|---|---|
 | M109 | 01:24:45–01:25:28 | FFN 位置 |
 | M110 | 01:25:28–01:26:12 | Linear+ReLU |
