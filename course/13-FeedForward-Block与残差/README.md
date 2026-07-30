@@ -61,12 +61,34 @@ def forward(self, x):
     return x
 ```
 
-运行本章的两个最小版本：
+### 主线 V7、V8 与本章的关系
+
+本章有两个互相独立的实验文件：[V7](./code/V7-feed-forward.py)只证明 FFN 不混合 token，[V8](./code/V8-residual-connection.py)只证明残差主路能保留前向值和梯度。它们不是在 V6 文件上不断追加的完整模型；两个概念会在下一章的 V9 中正式合并进 Block。
+
+在项目根目录运行：
 
 ```bash
 python course/13-FeedForward-Block与残差/code/V7-feed-forward.py
 python course/13-FeedForward-Block与残差/code/V8-residual-connection.py
 ```
+
+### 运行结果怎么读
+
+V7 应输出：
+
+```text
+输入/输出形状： (2, 4, 8)
+修改第 0 个词元不会影响后续词元的输出：是
+```
+
+V8 应输出：
+
+```text
+前向传播初始为恒等映射： 是
+梯度原样传到输入： 是
+```
+
+两个“是”不是装饰文字：打印之前已有断言验证对应张量。V7 改 token 0 后，位置 1–3 的输出必须保持相同；V8 把分支权重清零后，输出必须等于输入且输入梯度全为 1。
 
 ## 5. 每行代码在做什么
 
@@ -78,6 +100,30 @@ python course/13-FeedForward-Block与残差/code/V8-residual-connection.py
 - `x + self.ffwd(x)` 再逐 token 加工并保留通信后的 x。
 
 多头 Attention 末尾的 output projection 把拼接的头混合回统一 C；FFN 末尾投影把 4C 压回 C。两者都为残差 Shape 对齐服务，但参数不共享。
+
+### 完整 V7 代码导读
+
+V7 的 `FeedForward` 只使用 `Linear(C,C)+ReLU`，比本章上方最终采用的 `C→4C→C` 更小。这里故意只隔离“每个 token 独立计算”这一性质；四倍扩展和第二层 Linear 会在 V9 的完整 Block 中加入。
+
+| 代码区块 | 作用 |
+|---|---|
+| `FeedForward.__init__/forward` | 用 `Sequential` 对最后一个 C 轴逐位置应用同一组参数 |
+| `changed = x.clone(); changed[:,0] += 10` | 只制造一个位置不同的对照输入 |
+| 两次 `layer(...)` | 保证对照组经过完全相同的 FFN 参数 |
+| 三个断言 | 检查 Shape、未改位置不受影响、被改位置确实改变 |
+| 主入口 | 直接运行时调用 `demo()` 并打印结论 |
+
+### 完整 V8 代码导读
+
+| 代码区块 | 作用 |
+|---|---|
+| `ResidualLayer` | 建立一个 C→C 分支并把权重初始化为 0 |
+| `return x + self.branch(x)` | 明确保留不经过分支的恒等主路 |
+| `requires_grad=True` | 要求 autograd 为输入 x 保存梯度 |
+| `out.sum().backward()` | 用最简单标量目标触发反向传播 |
+| 两个断言 | 分别验证 `out==x` 与 `x.grad==1` |
+
+分支初始化为 0 只是为了把恒等路径展示得完全可见，不代表实际 Transformer 的所有残差分支都必须这样初始化。V8 验证的是 `x+F(x)` 这条接线本身。
 
 ## 6. Shape 变化卡片
 

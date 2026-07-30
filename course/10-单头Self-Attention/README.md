@@ -61,11 +61,28 @@ weights = F.softmax(scores, dim=-1)
 out = weights @ v
 ```
 
-运行 V5：
+### 主线 V5 与本章的关系
+
+[完整 V5](./code/V5-single-head-demo.py)沿用 V4 的 mask→softmax→加权和骨架，把原来全为 0 的固定 scores 换成 `Q @ Kᵀ`，并用单独的 V 提供被汇总内容。它仍是隔离实验，暂时没有语言模型、loss 或训练循环。
+
+在项目根目录运行：
 
 ```bash
 python course/10-单头Self-Attention/code/V5-single-head-demo.py
 ```
+
+### 运行结果怎么读
+
+参考输出的结构：
+
+```text
+x 的形状： (2, 4, 6)
+q/k/v 的形状： (2, 4, 3)
+注意力权重的形状： (2, 4, 4)
+输出的形状： (2, 4, 3)
+```
+
+后面还会打印第一个 batch 的 `4×4` 权重矩阵。每一行和应为 1，严格右上角应为 0；允许位置之间通常不再均分，这正是内容相关 Attention 与 V4 固定平均的区别。
 
 ## 5. 每行代码在做什么
 
@@ -77,6 +94,19 @@ python course/10-单头Self-Attention/code/V5-single-head-demo.py
 - mask 把未来分数变 `-inf`。
 - softmax 把每一行变成对允许来源的权重。
 - `weights @ v` 按这些权重汇总 Value，得到 `[B,T,H]`。
+
+### 完整 V5 代码导读
+
+| 代码区块 | 做什么 | 与 V4 的对应关系 |
+|---|---|---|
+| 固定种子、`B/T/C/H` 与随机 `x` | 建立可复现实验，区分输入通道 C 和头宽 H | V4 只有 B/T/C，这里增加 H |
+| `key/query/value` 三个 Linear | 对每个 token 独立产生 K/Q/V | 替换 V4 的固定分数与原始 x 值 |
+| `raw_scores` | 计算所有 Query–Key 配对并除以 `√H` | 对应 V4 的 `scores [T,T]`，现在扩展为 `[B,T,T]` |
+| `causal_mask` 与 `masked_scores` | 禁止当前位置看未来 | 因果规则保持不变 |
+| `weights` 与 `out` | softmax 后按权重汇总 V | 对应 V4 的 `softmax_weights @ x` |
+| `demo()` | 检查 q/k/v、scores、weights、out 的 Shape 与因果性质 | 将本章所有接口要求变成断言 |
+
+V5 把计算写在模块顶层，是为了让每个中间张量都能直接观察；它不是以后模型类的最终组织方式。打印结果中的 `grad_fn` 表示权重仍连接着可求梯度的 Linear 参数，并不表示这里已经执行训练。
 
 ## 6. Shape 变化卡片
 

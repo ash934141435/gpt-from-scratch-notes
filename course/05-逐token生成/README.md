@@ -63,11 +63,26 @@ generated = model.generate(context, max_new_tokens=20)
 print(generated.shape)
 ```
 
-本章继续使用第 04 章的 V2，因为这个版本同时包含 Bigram 模型和完整生成循环：
+### 主线 V2 与本章的关系
+
+本章不新建 V3，而是继续使用[第 04 章的完整 V2](../04-第一个Bigram模型/code/V2-bigram-model.py)。第 04 章已经解释数据、模型和 loss；本章只精读同一文件中的 `generate`，并把上次暂时跳过的后两行输出接回来。V3 要等模型真正加入训练后才出现。
+
+在项目根目录再次运行：
 
 ```bash
 python course/04-第一个Bigram模型/code/V2-bigram-model.py
 ```
+
+### 运行结果怎么读
+
+这次重点观察：
+
+```text
+生成结果的形状： (1, 21)
+未训练模型的样例： '\npxMHoRFJa!JKmRjtXzfN'
+```
+
+`context` 原有 1 个 token，循环追加 20 次，因此总长度必须是 21。样例内容随机且没有语言质量要求；当前只验收“每轮选一个、沿时间轴拼回、最后能 decode”这条路径。
 
 ## 5. 每行代码在做什么
 
@@ -78,6 +93,19 @@ python course/04-第一个Bigram模型/code/V2-bigram-model.py
 - `multinomial(...,1)` 为每一行抽一个编号，Shape `[B,1]`。
 - `cat(...,dim=1)` 沿时间轴 T 追加；不能沿 batch 轴。
 - 返回值包含原始前缀，不只包含新增 token。
+
+### V2 生成部分代码导读
+
+`generate` 方法是 V2 生成部分的完整闭环，可以按四段读：
+
+| 代码 | 作用 | 改错后的现象 |
+|---|---|---|
+| `for _ in range(max_new_tokens)` | 明确追加次数 | 次数不对会直接改变最终长度 |
+| `logits, _ = self(idx)` | 复用模型前向；生成时不传 targets | 若错误传 targets，就还需要不存在的未来答案 |
+| `logits[:, -1, :]` 与 softmax | 只用最后位置的 V 个分数并转成概率 | 少了 `-1` 会保留所有时间位置，抽样 Shape 无法与 idx 拼接 |
+| `multinomial(...,1)` 与 `cat(dim=1)` | 每个 batch 抽一个 token，并追加到 T 轴 | `dim=0` 会把 batch 当时间，Shape 错误 |
+
+`demo()` 的生成部分先建立 `[1,1]` 的零 token 前缀，再要求生成结果为 `[1,21]`，并检查第一个 token 仍为 0。最后 `decode(generated[0].tolist())` 依次完成“取第一条序列→转 Python 列表→编号还原字符”。至此，V2 的全部代码区块已经由第 04、05 两章共同讲完。
 
 ## 6. Shape 变化卡片
 

@@ -58,11 +58,28 @@ class MultiHeadAttention(nn.Module):
         return torch.cat([head(x) for head in self.heads], dim=-1)
 ```
 
-运行 V6：
+### 主线 V6 与本章的关系
+
+[完整 V6](./code/V6-multi-head-attention.py)把 V5 的单头计算封装成 `Head`，复制为四个独立头，再接入一个最小语言模型。它还把第 09 章的位置 Embedding 和第 05 章的生成窗口接回来，因此是第一次看到多个旧知识点围绕 Multi-Head Attention 协作。
+
+在项目根目录运行：
 
 ```bash
 python course/12-Multi-Head-Attention/code/V6-multi-head-attention.py
 ```
+
+### 运行结果怎么读
+
+参考输出：
+
+```text
+每个注意力头的形状： (2, 8, 8)
+拼接后的形状： (2, 8, 32)
+logits 的形状： (2, 8, 65)
+生成序列长度： 11
+```
+
+四个头各输出 8 个通道，沿最后一轴拼成 32，而 B=2、T=8 都不变。生成从长度 1 开始追加 10 个 token，所以得到 11；虽然生成长度超过 `block_size=8`，每次送进模型的 context 仍最多为 8。
 
 ## 5. 每行代码在做什么
 
@@ -81,6 +98,20 @@ self.register_buffer("tril", torch.tril(torch.ones(block_size, block_size)))
 tril 需要随模型移动设备、保存状态，但不应被 optimizer 更新，所以注册为 buffer 而不是 parameter。
 
 生成时只保留最近 `block_size` 个 token：`idx[:, -block_size:]`。位置表和 mask 只能处理这么长的窗口。
+
+### 完整 V6 代码导读
+
+| 代码区块 | 职责 | 关键接口 |
+|---|---|---|
+| `Head` | 封装单头 Q/K/V、缩放、因果 mask 和 Value 聚合 | `[B,T,C] → [B,T,H]` |
+| `register_buffer("tril", ...)` | 保存不训练但需跟随模型的因果模板 | 切成 `[:time,:time]` 适配当前 T |
+| `MultiHeadAttention` | 注册多个 Head 并沿通道轴拼接 | `num_heads×H=C`，所以输出仍为 `[B,T,C]` |
+| `TinyLanguageModel.__init__` | 组装 token/position Embedding、Attention 与 `lm_head` | 把字符 ID 变成 logits |
+| `TinyLanguageModel.forward` | 创建位置编号、两路 Embedding 相加、通信并投影 | `[B,T] → [B,T,65]` |
+| `TinyLanguageModel.generate` | 裁剪最近窗口、取末位分数、采样并追加 | 总序列可增长，模型输入不超过 block size |
+| `demo()` | 单独观察每头、拼接、logits、生成和 buffer 注册 | 同时验证结构 Shape 与 PyTorch 模块管理 |
+
+`demo()` 特意从 `model.attention.heads` 逐头计算一次，是为了暴露单头输出供断言；正常 `forward` 会由 `MultiHeadAttention` 统一调用。`named_parameters()` 中不应出现 `tril`，`named_buffers()` 中必须出现，证明 mask 会保存和迁移设备，却不会被 AdamW 更新。
 
 ## 6. Shape 变化卡片
 

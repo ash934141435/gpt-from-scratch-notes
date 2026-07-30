@@ -37,6 +37,10 @@ V 只在输入查表和输出候选处出现；模型主体始终使用宽度 C�
 
 ## 4. 跟着完成最小代码
 
+### 本章与代码主线的关系
+
+本章不新增独立 V 版本。下面的短例子足以隔离 token Embedding、position Embedding 和相加 Shape；它们会在第 12 章的 V6 中第一次接回带多头 Attention 的最小语言模型。当前只需把两路查表讲清，不必提前阅读 V6 的多头代码。
+
 ```python
 import torch
 from torch import nn

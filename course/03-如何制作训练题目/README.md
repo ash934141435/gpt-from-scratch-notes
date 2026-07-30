@@ -75,11 +75,30 @@ for t in range(block_size):
     print(context.tolist(), "->", target.item())
 ```
 
-再运行 V1：
+### 主线 V1 与本章的关系
+
+[完整 V1](./code/V1-data-pipeline.py)保留 V0 的读取、词表和编解码，再新增张量化、train/val 切分和随机 batch。上面的短例子只展示一个固定窗口；V1 的 `get_batch` 会一次抽取 4 个窗口，所以它是把“手工出一道题”升级为“自动出一批题”。
+
+在项目根目录运行：
 
 ```bash
 python course/03-如何制作训练题目/code/V1-data-pipeline.py
 ```
+
+### 运行结果怎么读
+
+参考输出：
+
+```text
+字符数=1,115,394，词表大小=65
+训练集=1,003,854，验证集=111,540
+x 的形状： (4, 8)
+y 的形状： (4, 8)
+第一组 x： [24, 43, 58, 5, 57, 1, 46, 43]
+第一组 y： [43, 58, 5, 57, 1, 46, 43, 39]
+```
+
+先看两组 Shape 是否都是 `(4,8)`，再逐项比较最后两行：`x` 从第二项开始应与 `y` 到倒数第二项完全相同。具体编号来自固定随机种子；真正的正确性条件是“错位一项”，不是背下这些数字。
 
 ## 5. 每行代码在做什么
 
@@ -92,6 +111,20 @@ python course/03-如何制作训练题目/code/V1-data-pipeline.py
 - `.item()` 把只有一个值的张量取成普通 Python 数。
 
 完整 V1 的 `get_batch` 会随机选 `B` 个起点，再把各行用 `torch.stack` 叠起来。
+
+### 完整 V1 代码导读
+
+| 代码区块 | 相比 V0 的变化 | 作用 |
+|---|---|---|
+| 读取、词表、`encode/decode` | 原样继承 | 先把全文变成稳定的字符 ID |
+| `torch.tensor(..., dtype=torch.long)` | 新增 | Embedding 的索引必须是整数张量 |
+| `split_index`、`train_data`、`val_data` | 新增 | 按时间顺序切成互不重叠的训练集和验证集 |
+| `batch_size`、`block_size` | 新增 | 分别规定一次有几行题、每行有几个输入位置 |
+| 独立 `generator` | 新增 | 固定本演示的抽样顺序，又不依赖全局随机状态 |
+| `get_batch(split)` | 新增 | 选数据集、抽 B 个起点、错位切 x/y，再 `stack` 成 `[B,T]` |
+| `demo()` 与主入口 | 扩展 | 通过断言检查 dtype、Shape 和错位关系，再打印一组可读样例 |
+
+`torch.randint` 的上界写成 `len(source)-block_size`，是因为每个起点后还要读取 `block_size+1` 个 token。两个列表推导使用同一组 `starts`：x 从 `i` 开始，y 从 `i+1` 开始；如果分别随机抽起点，Shape 仍可能正确，但题目与答案会悄悄错配。
 
 ## 6. Shape 变化卡片
 

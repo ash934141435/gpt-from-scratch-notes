@@ -70,11 +70,31 @@ logits, loss = model(x, y)
 print(logits.shape, loss.item())
 ```
 
-运行主线 V2：
+### 主线 V2 与本章的关系
+
+[完整 V2](./code/V2-bigram-model.py)在 V1 数据管线后加入 `BigramLanguageModel`，并一次性保存了两个相邻知识点：本章的模型与 loss，以及第 05 章的逐 token 生成。因此本章运行 V2 时只要求解释输出的前两行；后两行先确认能运行，到下一章再逐行拆解。
+
+在项目根目录运行：
 
 ```bash
 python course/04-第一个Bigram模型/code/V2-bigram-model.py
 ```
+
+### 运行结果怎么读
+
+参考输出：
+
+```text
+训练用 logits 的形状： (32, 65)
+初始损失： 4.7051
+生成结果的形状： (1, 21)
+未训练模型的样例： '\npxMHoRFJa!JKmRjtXzfN'
+```
+
+- `(32,65)` 来自 `B×T=4×8=32` 道题，每道题有 65 个候选字符分数。
+- 初始 loss 在 4–5 左右，与 `ln(65)≈4.17` 同一数量级；随机权重不要求精确等于均匀分布。
+- `(1,21)` 和乱码属于第 05 章：一个起始 token 加 20 个新 token。乱码恰好说明模型尚未训练，不是程序损坏。
+- 固定随机种子通常会复现这里的数字；不同 PyTorch 后端若有细小差异，以 Shape、有限 loss 和长度为判断标准。
 
 ## 5. 每行代码在做什么
 
@@ -88,6 +108,21 @@ python course/04-第一个Bigram模型/code/V2-bigram-model.py
 - loss 是一个标量：越小表示给正确字符的相对分数越高。
 
 `model.parameters()` 会找到 Embedding 表中的数字。第 06 章的 optimizer 会修改它们。
+
+### 完整 V2 代码导读
+
+| 代码区块 | 来源或新增内容 | 本章怎样读 |
+|---|---|---|
+| 导入与 `torch.manual_seed(1337)` | 新增 PyTorch 模型 API 与固定随机种子 | 让初始化、batch 和抽样尽量可复现 |
+| 文本、词表、编码、数据切分 | 继承 V0/V1 | 它们为模型提供 65 类输入和训练题，不是本章新知识 |
+| `get_batch` | 继承 V1 | 返回 `x/y [4,8]`，作为 `forward` 的输入和答案 |
+| `BigramLanguageModel.__init__` | 新增 `Embedding(V,V)` | 建立唯一一张可学习的 `65×65` 转移表 |
+| `forward` | 新增 logits 与可选 loss | 有 targets 时展平计算交叉熵；无 targets 时只返回分数 |
+| `generate` | 新增但留到第 05 章精读 | 使用 `forward` 的无 targets 路径循环采样 |
+| `demo()` | 串起数据、模型、loss 和生成 | 断言接口契约，再打印四个可观察结果 |
+| 主入口保护 | 继承统一脚本结构 | 直接运行才执行 `demo()` |
+
+V2 在计算 loss 后返回的是展平后的 `flat_logits [B×T,V]`，这是为了直接断言 cross-entropy 实际接收到的 Shape。这个演示接口与前面概念图中的原始 `[B,T,V]` 不矛盾：展平只发生在 loss 分支中。`loss is not None and torch.isfinite(loss)` 同时检查“确实算了 loss”和“结果不是 `nan/inf`”。
 
 ## 6. Shape 变化卡片
 

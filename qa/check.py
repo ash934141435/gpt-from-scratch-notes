@@ -188,6 +188,12 @@ for number, directory, title, first, last in CHAPTERS:
         errors.append(
             f"chapter {number} heading sequence mismatch: expected {expected_headings}, got {actual_headings}"
         )
+    if not re.search(
+        r"^### (?:本章与代码主线的关系|主线 V.+ 与本章的关系)$",
+        text,
+        re.MULTILINE,
+    ):
+        errors.append(f"chapter {number} does not explain its relationship to the code mainline")
 
     fill_section = section(text, "填空模仿")
     task_section = section(text, "独立小任务")
@@ -387,6 +393,46 @@ for number in range(12):
         errors.append(f"missing runnable V{number} file")
 if "--smoke-test" not in (ROOT / "capstone/V11-capstone-gpt.py").read_text(encoding="utf-8"):
     errors.append("V11 does not expose --smoke-test")
+
+# 每个可运行版本都必须有“版本关系→运行输出→完整代码导读”的教学闭环。
+# V2 由第 04、05 章共同讲完；V7/V8 共用第 13 章，其余版本各有一个主讲文档。
+code_guides = {
+    "V0": (COURSE / "02-文本如何变成数字/README.md", "### 完整 V0 代码导读"),
+    "V1": (COURSE / "03-如何制作训练题目/README.md", "### 完整 V1 代码导读"),
+    "V2": (COURSE / "04-第一个Bigram模型/README.md", "### 完整 V2 代码导读"),
+    "V3": (COURSE / "06-模型如何学习/README.md", "### 完整 V3 代码导读"),
+    "V4": (COURSE / "08-矩阵乘法与因果Mask/README.md", "### 完整 V4 代码导读"),
+    "V5": (COURSE / "10-单头Self-Attention/README.md", "### 完整 V5 代码导读"),
+    "V6": (COURSE / "12-Multi-Head-Attention/README.md", "### 完整 V6 代码导读"),
+    "V7": (COURSE / "13-FeedForward-Block与残差/README.md", "### 完整 V7 代码导读"),
+    "V8": (COURSE / "13-FeedForward-Block与残差/README.md", "### 完整 V8 代码导读"),
+    "V9": (COURSE / "14-LayerNorm与Pre-Norm/README.md", "### 完整 V9 代码导读"),
+    "V10": (COURSE / "15-完整GPT组装/README.md", "### 完整 V10 代码导读"),
+    "V11": (ROOT / "capstone/README.md", "## 完整 V11 代码导读"),
+}
+for version, (guide_path, guide_heading) in code_guides.items():
+    guide_text = guide_path.read_text(encoding="utf-8")
+    output_heading = "## 运行结果怎么读" if version == "V11" else "### 运行结果怎么读"
+    if guide_heading not in guide_text:
+        errors.append(f"{version} is missing its complete code guide")
+    if output_heading not in guide_text:
+        errors.append(f"{version} is missing its output explanation")
+    relation_version = "V7、V8" if version in {"V7", "V8"} else version
+    if not re.search(
+        rf"主线 {re.escape(relation_version)}(?:[^\n]*)与(?:本章|课程)的关系",
+        guide_text,
+    ):
+        errors.append(f"{version} is missing its mainline relationship explanation")
+
+v2_generation = (COURSE / "05-逐token生成/README.md").read_text(encoding="utf-8")
+if "### V2 生成部分代码导读" not in v2_generation:
+    errors.append("V2 generate code is not explained in chapter 05")
+
+version_index = (ROOT / "appendices/E-完整代码版本索引.md").read_text(encoding="utf-8")
+for version in code_guides:
+    anchor = f"#完整-{version.lower()}-代码导读"
+    if anchor not in version_index:
+        errors.append(f"code version index does not link to the {version} guide")
 
 required_qa = (
     "cpu-benchmark.md",

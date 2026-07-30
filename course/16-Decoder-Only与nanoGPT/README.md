@@ -49,6 +49,10 @@ flowchart TB
 
 ## 4. 跟着完成最小代码
 
+### 本章与代码主线的关系
+
+V10 已经完成本课程的代码主线，本章不再创建 V 版本。下面只用已学的矩阵 Shape 比较 Self-Attention 与 Cross-Attention 的输入来源；它不会改造 V10，也不要求实现完整 Encoder。
+
 用 Shape 模拟不同源/目标长度：
 
 ```python

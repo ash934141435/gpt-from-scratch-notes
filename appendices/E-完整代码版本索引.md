@@ -10,20 +10,20 @@
 
 ## 版本总览
 
-| 版本 | 视频阶段 | 核心变化 | 解决的问题 | 可运行文件 |
+| 版本 | 视频阶段 | 核心变化 | 解决的问题 | 代码与讲解 |
 |---|---:|---|---|---|
-| V0 | 07:51 | 读取文本、字符词表、encode/decode | 字符串不能直接作为模型索引 | [V0](../course/02-文本如何变成数字/code/V0-text-vocabulary.py) |
-| V1 | 17:46 | train/val 切分、错位 x/y、随机 batch | 没有监督学习样本 | [V1](../course/03-如何制作训练题目/code/V1-data-pipeline.py) |
-| V2 | 21:53 | Bigram embedding、cross-entropy、generate | 没有预测器与采样循环 | [V2](../course/04-第一个Bigram模型/code/V2-bigram-model.py) |
-| V3 | 34:57 | AdamW、训练循环、train/val 评估 | 参数不更新，无法判断泛化 | [V3](../course/06-模型如何学习/code/V3-trained-bigram.py) |
-| V4 | 42:24–58:17 | 循环、矩阵、mask+softmax 三种前缀平均 | token 之间尚无高效因果通信 | [V4](../course/08-矩阵乘法与因果Mask/code/V4-prefix-average-demo.py) |
-| V5 | 64:41–79:13 | Q/K/V、因果 mask、缩放单头注意力 | 历史位置只能固定平均 | [V5](../course/10-单头Self-Attention/code/V5-single-head-demo.py) |
-| V6 | 79:13–84:45 | Head 模块、buffer、窗口裁剪、多头拼接 | 单头通信视角有限 | [V6](../course/12-Multi-Head-Attention/code/V6-multi-head-attention.py) |
-| V7 | 84:45–86:12 | 逐 token Linear+ReLU | 通信后没有独立计算 | [V7](../course/13-FeedForward-Block与残差/code/V7-feed-forward.py) |
-| V8 | 87:55–90:30 | `x + F(x)` 残差路径 | 深层网络梯度路径困难 | [V8](../course/13-FeedForward-Block与残差/code/V8-residual-connection.py) |
-| V9 | 90:30–97:49 | 投影、4C FFN、pre-norm 完整 Block | Block 不能稳定堆深 | [V9](../course/14-LayerNorm与Pre-Norm/code/V9-transformer-block.py) |
-| V10 | 97:49–102:43 | Dropout、参数化层数、完整 loss 与生成 | 容量、泛化与完整训练路径不足 | [V10](../course/15-完整GPT组装/code/V10-complete-gpt.py) |
-| V11 | 教材补充 | 固定评估、初始化、checkpoint、temperature、top-k | V10 只适合快速结构验收 | [V11](../capstone/V11-capstone-gpt.py) |
+| V0 | 07:51 | 读取文本、字符词表、encode/decode | 字符串不能直接作为模型索引 | [代码](../course/02-文本如何变成数字/code/V0-text-vocabulary.py) · [完整导读](../course/02-文本如何变成数字/README.md#完整-v0-代码导读) |
+| V1 | 17:46 | train/val 切分、错位 x/y、随机 batch | 没有监督学习样本 | [代码](../course/03-如何制作训练题目/code/V1-data-pipeline.py) · [完整导读](../course/03-如何制作训练题目/README.md#完整-v1-代码导读) |
+| V2 | 21:53 | Bigram embedding、cross-entropy、generate | 没有预测器与采样循环 | [代码](../course/04-第一个Bigram模型/code/V2-bigram-model.py) · [模型/loss 导读](../course/04-第一个Bigram模型/README.md#完整-v2-代码导读) · [生成导读](../course/05-逐token生成/README.md#v2-生成部分代码导读) |
+| V3 | 34:57 | AdamW、训练循环、train/val 评估 | 参数不更新，无法判断泛化 | [代码](../course/06-模型如何学习/code/V3-trained-bigram.py) · [完整导读](../course/06-模型如何学习/README.md#完整-v3-代码导读) |
+| V4 | 42:24–58:17 | 循环、矩阵、mask+softmax 三种前缀平均 | token 之间尚无高效因果通信 | [代码](../course/08-矩阵乘法与因果Mask/code/V4-prefix-average-demo.py) · [完整导读](../course/08-矩阵乘法与因果Mask/README.md#完整-v4-代码导读) |
+| V5 | 64:41–79:13 | Q/K/V、因果 mask、缩放单头注意力 | 历史位置只能固定平均 | [代码](../course/10-单头Self-Attention/code/V5-single-head-demo.py) · [完整导读](../course/10-单头Self-Attention/README.md#完整-v5-代码导读) |
+| V6 | 79:13–84:45 | Head 模块、buffer、窗口裁剪、多头拼接 | 单头通信视角有限 | [代码](../course/12-Multi-Head-Attention/code/V6-multi-head-attention.py) · [完整导读](../course/12-Multi-Head-Attention/README.md#完整-v6-代码导读) |
+| V7 | 84:45–86:12 | 逐 token Linear+ReLU | 通信后没有独立计算 | [代码](../course/13-FeedForward-Block与残差/code/V7-feed-forward.py) · [完整导读](../course/13-FeedForward-Block与残差/README.md#完整-v7-代码导读) |
+| V8 | 87:55–90:30 | `x + F(x)` 残差路径 | 深层网络梯度路径困难 | [代码](../course/13-FeedForward-Block与残差/code/V8-residual-connection.py) · [完整导读](../course/13-FeedForward-Block与残差/README.md#完整-v8-代码导读) |
+| V9 | 90:30–97:49 | 投影、4C FFN、pre-norm 完整 Block | Block 不能稳定堆深 | [代码](../course/14-LayerNorm与Pre-Norm/code/V9-transformer-block.py) · [完整导读](../course/14-LayerNorm与Pre-Norm/README.md#完整-v9-代码导读) |
+| V10 | 97:49–102:43 | Dropout、参数化层数、完整 loss 与生成 | 容量、泛化与完整训练路径不足 | [代码](../course/15-完整GPT组装/code/V10-complete-gpt.py) · [完整导读](../course/15-完整GPT组装/README.md#完整-v10-代码导读) |
+| V11 | 教材补充 | 固定评估、初始化、checkpoint、temperature、top-k | V10 只适合快速结构验收 | [代码](../capstone/V11-capstone-gpt.py) · [完整导读](../capstone/README.md#完整-v11-代码导读) |
 
 ## 作者累计完整阶段
 
@@ -215,7 +215,7 @@ python capstone/V11-capstone-gpt.py
 4. 删除本次关键行会报错还是静默产生逻辑错误？
 5. 当前版本仍不能做什么？
 
-答案说不清时，不要急着运行下一版；回到对应章节的“修改前后对比”和“删除或改错会怎样”。
+答案说不清时，不要急着运行下一版；回到对应章节的“完整 Vx 代码导读”“运行结果怎么读”和“常见误解与报错”。
 
 ---
 

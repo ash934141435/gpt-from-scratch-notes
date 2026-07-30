@@ -63,13 +63,30 @@ def forward(self, idx, targets=None):
     return logits, loss
 ```
 
-必做：
+### 主线 V10 与本章的关系
+
+[完整 V10](./code/V10-complete-gpt.py)是必学代码终点。它不再隔离单个部件，而是把 V0–V9 的数据、Attention、FFN、残差、LayerNorm、loss、训练和生成接成一个可运行的 Decoder-Only GPT。V11 只补工程闭环，不改变这里的 Transformer 主干。
+
+在项目根目录运行：
 
 ```bash
 python course/15-完整GPT组装/code/V10-complete-gpt.py
 ```
 
 保持默认小配置。它用于普通电脑上的结构和训练闭环验收，不追求复现视频的大配置 loss。
+
+### 运行结果怎么读
+
+默认配置的一次参考输出：
+
+```text
+参数量： 110145
+验证损失变化：4.330 -> 3.908
+生成序列长度： 81
+<一行包含 \n 的未充分训练文本>
+```
+
+参数量和长度应固定；loss 应为有限数并在短训练后下降，但前后验证 batch 是随机抽取的，所以不要把 3.908 当作硬性答案。最后一行把真实换行替换为 `\n`，便于确认完整样例没有被终端拆散。默认张量和模型都在 CPU；V10 没有设备切换，V11 才加入该工程能力。
 
 ## 5. 每行代码在做什么
 
@@ -91,6 +108,34 @@ out = self.dropout(projection(out))   # 或分支有限输出上
 ```
 
 不要对含 `-inf` 的 `masked_scores` 直接做普通 Dropout。
+
+### 完整 V10 代码导读
+
+先看文件的六层结构，而不是从第 1 行一路背到第 185 行：
+
+| 层次 | 代码对象 | 输入→输出或职责 |
+|---|---|---|
+| 配置 | `BATCH_SIZE` 到 `LEARNING_RATE` | 使用普通电脑可快速验收的小规模参数 |
+| 单头 | `Head` | `[B,T,C]→[B,T,H]`，完成 Q/K/V、mask、softmax 与权重 Dropout |
+| 多头 | `MultiHeadAttention` | 并行多个头，拼接、projection，再做分支输出 Dropout |
+| 逐 token 计算 | `FeedForward` | `C→4C→C`，最后做 Dropout |
+| Block | `Block` | 两个 pre-norm 子层及两条残差路径，Shape 不变 |
+| 完整模型 | `GPTLanguageModel` | 两路 Embedding→N 个 Block→final norm→词表 logits/loss |
+
+文件后半部分负责把模型真正跑起来：
+
+| 函数或区块 | 完整作用 |
+|---|---|
+| `GPTLanguageModel.generate` | 暂时切到 eval，裁剪最近窗口，按末位概率逐 token 追加 |
+| `load_data` | 读取文本并一次返回 token 张量、`stoi` 和 `itos` |
+| `get_batch` | 从传入的数据集随机构造错位 x/y，不依赖全局 train/val 变量 |
+| `demo()` 数据与模型装配 | 9:1 切分，按显式参数构造模型和 AdamW |
+| 训练前后前向 | eval 下取初始验证 loss，train 下更新 20 步，再取最终验证 loss |
+| 生成与四个断言 | 检查 loss 有限、生成长度 81、Block 数量正确，再打印样例 |
+| `probe` 回归检查 | 用另一套 C、窗口、头数和层数构造模型，证明类没有偷读全局超参数 |
+| 主入口 | 直接运行时调用 `demo()` |
+
+`model.eval()` 会关闭 Dropout，`model.train()` 会重新开启；这正是 V3 提前建立模式切换习惯的原因。V10 的 `generate` 使用 `@torch.no_grad()`，但调用后保持 eval 模式，没有恢复先前状态；当前演示在训练结束后生成，因此没有问题。V11 会把模式恢复也补齐。
 
 ## 6. Shape 变化卡片
 
@@ -197,7 +242,7 @@ lm_head 后是 ____。
 
 ## 11. 独立小任务
 
-1. 运行 V10 并记录设备、参数量、loss 与生成长度；
+1. 运行 V10，确认它使用默认 CPU，并记录参数量、loss 与生成长度；
 2. 从 `idx` 开始，口头完整讲到抽出下一个 token；
 3. 标出 V10 中所有 Dropout，确认都作用在 softmax 后权重或有限分支输出；
 4. 只把 `N_LAYER` 从 2 改 3，预测参数量和时间方向，运行后恢复；

@@ -43,7 +43,9 @@
 
 ## 代码主线
 
-`V0 → V1 → … → V10` 是必学主线。每个版本放在首次要求运行它的新版章节中：
+`V0 → V1 → … → V10` 是必学主线。V 编号表示“可运行代码里程碑”，章节编号表示“学习步骤”，两者不是一一对应：一个版本可以由相邻两章共同讲解，没有新 V 版本的章节则使用章内小实验隔离概念。
+
+每个版本放在首次要求运行它的章节中。对应 README 统一提供“主线 Vx 与本章的关系”“运行结果怎么读”“完整 Vx 代码导读”；复用同一版本的章节会明确指出本章只关注哪个代码区块。
 
 | 新版章节 | 代码版本 | 说明 |
 |---|---|---|
@@ -58,7 +60,7 @@
 | [14](./14-LayerNorm与Pre-Norm/README.md) | [V9](./14-LayerNorm与Pre-Norm/code/V9-transformer-block.py) | LayerNorm 与完整 Pre-Norm Block |
 | [15](./15-完整GPT组装/README.md) | [V10](./15-完整GPT组装/code/V10-complete-gpt.py) | 完整 Decoder-Only GPT |
 
-没有列出代码版本的章节使用章内最小示例，不需要跳到旧目录找文件。V10 是课程终点；[V11 结课工程](../capstone/README.md)中的固定评估、perplexity、checkpoint、temperature 和 top-k 都是选学，不影响结课。
+没有列出代码版本的章节会在“本章与代码主线的关系”中说明它承接或预备哪个版本，只需运行章内最小示例，不需要跳到旧目录找文件。V10 是课程终点；[V11 结课工程](../capstone/README.md)中的固定评估、perplexity、checkpoint、temperature 和 top-k 都是选学，不影响结课。
 
 ## 卡住时去哪里
 

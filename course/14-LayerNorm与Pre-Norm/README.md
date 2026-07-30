@@ -65,11 +65,27 @@ class Block(nn.Module):
         return x
 ```
 
-运行本章完整 V9：
+### 主线 V9 与本章的关系
+
+[完整 V9](./code/V9-transformer-block.py)把 V6 的多头 Attention、V7 的 FFN 和 V8 的残差路径合并，再加入本章的两次 LayerNorm。V9 的重点不是增加语言模型外壳，而是证明一个完整 pre-norm Block 能保持 Shape 并让有限梯度通过。
+
+在项目根目录运行：
 
 ```bash
 python course/14-LayerNorm与Pre-Norm/code/V9-transformer-block.py
 ```
+
+### 运行结果怎么读
+
+参考输出：
+
+```text
+模块输入/输出形状： (2, 8, 32)
+前馈网络隐藏层宽度： 128
+输入梯度均为有限值：是
+```
+
+第一行验证残差两端 Shape 一致；第二行验证 FFN 已从 V7 的隔离版升级为 `C→4C→C`，这里 `4×32=128`；第三行说明整个 Block 的反向路径没有产生 `nan/inf`。
 
 ## 5. 每行代码在做什么
 
@@ -88,6 +104,19 @@ output = gamma * normalized + beta
 ```
 
 epsilon 是防止分母为 0 的很小正数。
+
+### 完整 V9 代码导读
+
+| 代码区块 | 从哪里来 | V9 中的变化 |
+|---|---|---|
+| `Head` | V5/V6 | 保留 Q/K/V、缩放、mask 和加权聚合 |
+| `MultiHeadAttention` | V6 | 拼接后新增 `projection(C,C)`，让多头结果再混合一次 |
+| `FeedForward` | V7 | 扩展为 `C→4C→C`，输出重新对齐残差 Shape |
+| `Block.__init__` | V6–V8 汇合 | 注册 Attention、FFN 以及参数不共享的 `norm1/norm2` |
+| `Block.forward` | 本章核心 | 两次执行“先 norm、再子层、最后与旧 x 相加” |
+| `demo()` | 完整 Block 自检 | 构造需梯度输入，前向后对均方值反传，再检查 Shape、宽度和梯度 |
+
+`out.square().mean()` 只是为了得到一个可反向传播的标量，不是语言模型的训练 loss。`first_linear` 和 `last_linear` 从 `Sequential` 的第 0、2 层取出两个 Linear，直接检查中间层确为 4C、输出层回到 C；ReLU 位于索引 1。
 
 ## 6. Shape 变化卡片
 
