@@ -55,12 +55,11 @@ def forward(self, x):
     return x
 ```
 
-运行三个最小版本：
+运行本章的两个最小版本：
 
 ```bash
-python 07-Transformer-Block/code/V7-feed-forward.py
-python 07-Transformer-Block/code/V8-residual-connection.py
-python 07-Transformer-Block/code/V9-transformer-block.py
+python course/13-FeedForward-Block与残差/code/V7-feed-forward.py
+python course/13-FeedForward-Block与残差/code/V8-residual-connection.py
 ```
 
 ## 6. 每行代码在做什么
@@ -151,7 +150,7 @@ def forward(self, x):
 1. 设 `B=2,T=8,C=32`，写出 FFN 每层 Shape；
 2. 运行 V7 并验证修改 token 0 不影响其他位置；
 3. 运行 V8，说明分支初始为 0 时为何 `out=x` 且输入梯度为 1；
-4. 在 V9 中标出两个混合 token 的位置和所有逐 token 操作。
+4. 在本章 Block 代码中标出两个混合 token 的位置和所有逐 token 操作。
 
 参考：真正混合 T 的是两个 MultiHeadAttention 调用内部；FFN、LayerNorm 和残差加法都不会跨 token 混合。
 

@@ -60,7 +60,7 @@ def forward(self, idx, targets=None):
 必做：
 
 ```bash
-python 08-完整GPT训练与生成/code/V10-complete-gpt.py
+python course/15-完整GPT组装/code/V10-complete-gpt.py
 ```
 
 保持默认小配置。它用于普通电脑上的结构和训练闭环验收，不追求复现视频的大配置 loss。

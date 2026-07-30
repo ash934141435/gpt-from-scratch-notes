@@ -63,7 +63,7 @@ assert decode(encode("cab!")) == "cab!"
 然后运行完整 V0：
 
 ```bash
-python 01-课程介绍与数据准备/code/V0-text-vocabulary.py
+python course/02-文本如何变成数字/code/V0-text-vocabulary.py
 ```
 
 ## 6. 每行代码在做什么

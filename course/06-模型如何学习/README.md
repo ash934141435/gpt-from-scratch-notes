@@ -45,7 +45,7 @@ for step in range(100):
 运行 V3：
 
 ```bash
-python 04-训练循环与模型评估/code/V3-trained-bigram.py
+python course/06-模型如何学习/code/V3-trained-bigram.py
 ```
 
 ## 6. 每行代码在做什么

@@ -12,17 +12,17 @@
 
 | 版本 | 视频阶段 | 核心变化 | 解决的问题 | 可运行文件 |
 |---|---:|---|---|---|
-| V0 | 07:51 | 读取文本、字符词表、encode/decode | 字符串不能直接作为模型索引 | [V0](../01-课程介绍与数据准备/code/V0-text-vocabulary.py) |
-| V1 | 17:46 | train/val 切分、错位 x/y、随机 batch | 没有监督学习样本 | [V1](../02-字符编码与训练数据/code/V1-data-pipeline.py) |
-| V2 | 21:53 | Bigram embedding、cross-entropy、generate | 没有预测器与采样循环 | [V2](../03-Bigram语言模型/code/V2-bigram-model.py) |
-| V3 | 34:57 | AdamW、训练循环、train/val 评估 | 参数不更新，无法判断泛化 | [V3](../04-训练循环与模型评估/code/V3-trained-bigram.py) |
-| V4 | 42:24–58:17 | 循环、矩阵、mask+softmax 三种前缀平均 | token 之间尚无高效因果通信 | [V4](../05-Self-Attention/code/V4-prefix-average-demo.py) |
-| V5 | 64:41–79:13 | Q/K/V、因果 mask、缩放单头注意力 | 历史位置只能固定平均 | [V5](../05-Self-Attention/code/V5-single-head-demo.py) |
-| V6 | 79:13–84:45 | Head 模块、buffer、窗口裁剪、多头拼接 | 单头通信视角有限 | [V6](../06-Multi-Head-Attention/code/V6-multi-head-attention.py) |
-| V7 | 84:45–86:12 | 逐 token Linear+ReLU | 通信后没有独立计算 | [V7](../07-Transformer-Block/code/V7-feed-forward.py) |
-| V8 | 87:55–90:30 | `x + F(x)` 残差路径 | 深层网络梯度路径困难 | [V8](../07-Transformer-Block/code/V8-residual-connection.py) |
-| V9 | 90:30–97:49 | 投影、4C FFN、pre-norm 完整 Block | Block 不能稳定堆深 | [V9](../07-Transformer-Block/code/V9-transformer-block.py) |
-| V10 | 97:49–102:43 | Dropout、参数化层数、完整 loss 与生成 | 容量、泛化与完整训练路径不足 | [V10](../08-完整GPT训练与生成/code/V10-complete-gpt.py) |
+| V0 | 07:51 | 读取文本、字符词表、encode/decode | 字符串不能直接作为模型索引 | [V0](../course/02-文本如何变成数字/code/V0-text-vocabulary.py) |
+| V1 | 17:46 | train/val 切分、错位 x/y、随机 batch | 没有监督学习样本 | [V1](../course/03-如何制作训练题目/code/V1-data-pipeline.py) |
+| V2 | 21:53 | Bigram embedding、cross-entropy、generate | 没有预测器与采样循环 | [V2](../course/04-第一个Bigram模型/code/V2-bigram-model.py) |
+| V3 | 34:57 | AdamW、训练循环、train/val 评估 | 参数不更新，无法判断泛化 | [V3](../course/06-模型如何学习/code/V3-trained-bigram.py) |
+| V4 | 42:24–58:17 | 循环、矩阵、mask+softmax 三种前缀平均 | token 之间尚无高效因果通信 | [V4](../course/08-矩阵乘法与因果Mask/code/V4-prefix-average-demo.py) |
+| V5 | 64:41–79:13 | Q/K/V、因果 mask、缩放单头注意力 | 历史位置只能固定平均 | [V5](../course/10-单头Self-Attention/code/V5-single-head-demo.py) |
+| V6 | 79:13–84:45 | Head 模块、buffer、窗口裁剪、多头拼接 | 单头通信视角有限 | [V6](../course/12-Multi-Head-Attention/code/V6-multi-head-attention.py) |
+| V7 | 84:45–86:12 | 逐 token Linear+ReLU | 通信后没有独立计算 | [V7](../course/13-FeedForward-Block与残差/code/V7-feed-forward.py) |
+| V8 | 87:55–90:30 | `x + F(x)` 残差路径 | 深层网络梯度路径困难 | [V8](../course/13-FeedForward-Block与残差/code/V8-residual-connection.py) |
+| V9 | 90:30–97:49 | 投影、4C FFN、pre-norm 完整 Block | Block 不能稳定堆深 | [V9](../course/14-LayerNorm与Pre-Norm/code/V9-transformer-block.py) |
+| V10 | 97:49–102:43 | Dropout、参数化层数、完整 loss 与生成 | 容量、泛化与完整训练路径不足 | [V10](../course/15-完整GPT组装/code/V10-complete-gpt.py) |
 | V11 | 教材补充 | 固定评估、初始化、checkpoint、temperature、top-k | V10 只适合快速结构验收 | [V11](../capstone/V11-capstone-gpt.py) |
 
 ## 作者累计完整阶段
@@ -184,17 +184,17 @@ V11 不再增加 Transformer 子层，而是补齐一次可复查实验需要的
 在项目根目录执行：
 
 ```bash
-python 01-课程介绍与数据准备/code/V0-text-vocabulary.py
-python 02-字符编码与训练数据/code/V1-data-pipeline.py
-python 03-Bigram语言模型/code/V2-bigram-model.py
-python 04-训练循环与模型评估/code/V3-trained-bigram.py
-python 05-Self-Attention/code/V4-prefix-average-demo.py
-python 05-Self-Attention/code/V5-single-head-demo.py
-python 06-Multi-Head-Attention/code/V6-multi-head-attention.py
-python 07-Transformer-Block/code/V7-feed-forward.py
-python 07-Transformer-Block/code/V8-residual-connection.py
-python 07-Transformer-Block/code/V9-transformer-block.py
-python 08-完整GPT训练与生成/code/V10-complete-gpt.py
+python course/02-文本如何变成数字/code/V0-text-vocabulary.py
+python course/03-如何制作训练题目/code/V1-data-pipeline.py
+python course/04-第一个Bigram模型/code/V2-bigram-model.py
+python course/06-模型如何学习/code/V3-trained-bigram.py
+python course/08-矩阵乘法与因果Mask/code/V4-prefix-average-demo.py
+python course/10-单头Self-Attention/code/V5-single-head-demo.py
+python course/12-Multi-Head-Attention/code/V6-multi-head-attention.py
+python course/13-FeedForward-Block与残差/code/V7-feed-forward.py
+python course/13-FeedForward-Block与残差/code/V8-residual-connection.py
+python course/14-LayerNorm与Pre-Norm/code/V9-transformer-block.py
+python course/15-完整GPT组装/code/V10-complete-gpt.py
 ```
 
 到这里主线已经完成。选学 V11 时再执行：

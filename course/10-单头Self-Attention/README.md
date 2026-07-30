@@ -57,7 +57,7 @@ out = weights @ v
 运行 V5：
 
 ```bash
-python 05-Self-Attention/code/V5-single-head-demo.py
+python course/10-单头Self-Attention/code/V5-single-head-demo.py
 ```
 
 ## 6. 每行代码在做什么

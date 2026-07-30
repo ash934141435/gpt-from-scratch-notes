@@ -77,7 +77,7 @@ for t in range(block_size):
 再运行 V1：
 
 ```bash
-python 02-字符编码与训练数据/code/V1-data-pipeline.py
+python course/03-如何制作训练题目/code/V1-data-pipeline.py
 ```
 
 ## 6. 每行代码在做什么

@@ -121,7 +121,7 @@ class GPTLanguageModel(nn.Module):
 
 
 def load_data() -> tuple[torch.Tensor, dict[str, int], dict[int, str]]:
-    source = Path(__file__).resolve().parents[2] / "sources/ng-video-lecture/input.txt"
+    source = Path(__file__).resolve().parents[3] / "sources/ng-video-lecture/input.txt"
     text = source.read_text(encoding="utf-8")
     chars = sorted(set(text))
     stoi = {char: index for index, char in enumerate(chars)}

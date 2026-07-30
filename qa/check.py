@@ -311,11 +311,11 @@ for redirect in ("00-学习路线.md", "环境准备.md", "GPT从零构建-学�
         errors.append(f"root redirect does not point into course: {redirect}")
 
 
-# V0-V10 主线、V11 选学与基础报告文件。
+# 新版章节内的 V0-V10 主线、V11 选学与基础报告文件。
 versions = read_csv(ROOT / "qa/code-evolution.csv")
 if [row["version"] for row in versions] != [f"V{number}" for number in range(12)]:
     errors.append("code evolution does not contain V0-V11 in order")
-code_files = sorted(ROOT.glob("[0-9][0-9]-*/code/V*.py")) + sorted(ROOT.glob("capstone/V*.py"))
+code_files = sorted(ROOT.glob("course/*/code/V*.py")) + sorted(ROOT.glob("capstone/V*.py"))
 if len(code_files) != 12:
     errors.append(f"expected 12 runnable V0-V11 files, got {len(code_files)}")
 for number in range(12):
