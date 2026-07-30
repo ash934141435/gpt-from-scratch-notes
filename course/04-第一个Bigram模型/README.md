@@ -25,16 +25,22 @@
 
 Bigram 的限制也很直接：只按当前字符查一行，因此 `a` 出现在不同句子时得到完全相同分数。
 
-## 4. 视频关键片段与画面
+一次前向计算中，输入、模型分数、正确答案和 loss 的关系如下：
 
-- `22:16–24:52`（M030–M033）：继承 `nn.Module`，用 Embedding 查 `[B,T,V]` logits。
-- `24:52–26:02`（M034–M035）：Bigram 限制与 cross-entropy。
-- `26:02–27:54`（M036–M038）：为 API 把 `[B,T,V]` 展平为 `[B×T,V]`。
-- `27:54–28:37`（M039）：用 `ln(65)` 检查随机基线。
+```mermaid
+flowchart LR
+    A["当前 token ID<br/>idx [B,T]"] --> B["Embedding 查表"]
+    B --> C["下个 token 分数<br/>logits [B,T,V]"]
+    C --> D["整理为 [B×T,V]"]
+    E["正确答案<br/>targets [B,T]"] --> F["整理为 [B×T]"]
+    D --> G["Cross-Entropy"]
+    F --> G
+    G --> H["标量 loss"]
+```
 
-![Bigram 的目标](../../03-Bigram语言模型/assets/crops/00-22-35-bigram-goal.png)
+模型负责为每个候选字符打分，targets 只在计算 loss 时提供正确编号。把这两条数据流分清，就不会把输入 token、候选类别和答案混为一谈。
 
-## 5. 跟着完成最小代码
+## 4. 跟着完成最小代码
 
 ```python
 import torch
@@ -70,7 +76,7 @@ print(logits.shape, loss.item())
 python course/04-第一个Bigram模型/code/V2-bigram-model.py
 ```
 
-## 6. 每行代码在做什么
+## 5. 每行代码在做什么
 
 - `TinyBigram(nn.Module)` 表示这个类拥有 PyTorch 模型的参数管理能力。
 - `super().__init__()` 初始化父类；漏掉它会破坏模块注册。
@@ -83,7 +89,7 @@ python course/04-第一个Bigram模型/code/V2-bigram-model.py
 
 `model.parameters()` 会找到 Embedding 表中的数字。第 06 章的 optimizer 会修改它们。
 
-## 7. Shape 变化卡片
+## 6. Shape 变化卡片
 
 设 `B=4,T=8,V=65`：
 
@@ -97,7 +103,7 @@ cross_entropy：               []  一个 loss
 
 这里的最后一轴不是普通隐藏特征，而是 65 个候选字符各一个分数。
 
-## 8. 为什么这样设计
+## 7. 为什么这样设计
 
 Embedding 通常用来把 ID 查成内部特征；Bigram 把每行直接设成 V 个候选分数，相当于可学习的转移表。它是最小模型，便于单独理解接口、loss 和生成。
 
@@ -109,7 +115,15 @@ Cross-entropy 的直觉：先把 V 个分数转换成相对概率，再看模型
 
 若 65 个字符概率都一样，正确字符概率是 `1/65`，loss 为 `-ln(1/65)=ln(65)≈4.17`。随机初始化接近这个数是合理基线，不要求精确等于。
 
-## 9. 常见误解与报错
+视频第一次运行模型时，也会把实际初始 loss 与这个理论数量级放在一起检查：
+
+![Bigram 模型随机初始化时的 loss 输出](../../03-Bigram语言模型/assets/crops/00-28-15-ln65.png)
+
+*图：随机初始化 loss 与 `ln(65)` 基线的运行对照（原视频 M039，00:28:15）*
+
+实际值约为 4.88，并不需要等于 4.17；随机权重不会产生完全均匀的概率。这里的用途是发现数量级异常，例如 Shape 或类别轴弄错后出现离谱结果。
+
+## 8. 常见误解与报错
 
 - logits 可以为负，也不要求和为 1；概率才在 0 到 1 之间且总和为 1。
 - `argmax` 是最大分数的编号，不是分数本身。
@@ -118,7 +132,7 @@ Cross-entropy 的直觉：先把 V 个分数转换成相对概率，再看模型
 - targets 必须是整数类别编号，通常 `dtype=torch.long`，Shape `[N]`。
 - `reshape` 只重排视图，不应混乱 x 与 y 的对应顺序。
 
-## 10. 完整示范
+## 9. 完整示范
 
 手工固定一张表，观察查表：
 
@@ -141,7 +155,7 @@ assert logits[0, 0].tolist() == [1.0, 4.0, -1.0]
 print(logits)
 ```
 
-## 11. 填空模仿
+## 10. 填空模仿
 
 ```python
 class Bigram(nn.____):
@@ -160,7 +174,7 @@ class Bigram(nn.____):
 
 参考答案：`Module`、`Embedding`、`table`、`shape`、`B * T`。
 
-## 12. 独立小任务
+## 11. 独立小任务
 
 设 `B=2,T=3,V=4`：
 
@@ -171,7 +185,7 @@ class Bigram(nn.____):
 
 参考 Shape：`[2,3] → [2,3,4] → [6,4]`，targets `[2,3]→[6]`，loss `[]`。实际 loss 只应“大致接近”1.386，不要求一致。
 
-## 13. 过关标准
+## 12. 过关标准
 
 - 能说出模型输入、输出、目标和 loss；
 - 能解释 `nn.Module`、参数与 Embedding 的最低限度作用；
@@ -179,13 +193,13 @@ class Bigram(nn.____):
 - 能推出 `[B,T,V] → [B×T,V]`；
 - 能用 `ln(V)` 判断随机初始 loss 是否数量级合理。
 
-## 14. 暂时不用懂什么
+## 13. 暂时不用懂什么
 
 暂时不用懂参数怎样更新、cross-entropy 的完整推导、反向传播公式和 Attention。下一章只用当前未训练模型完成生成接口。
 
-## 15. 视频时间与 M 映射
+## 14. 原视频定位与 M 映射
 
-| M | 时间 | 本章用途 |
+| M | 原视频时间 | 本章用途 |
 |---|---|---|
 | M030 | 00:22:16–00:22:52 | Bigram 目标 |
 | M031 | 00:22:52–00:23:26 | `nn.Module` 与 Embedding |
