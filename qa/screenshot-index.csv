@@ -24,4 +24,5 @@
 08-完整GPT训练与生成/assets/crops/01-40-50-loss-148.png,01:40:50,M135,运行结果,最终验证loss,是,是,15,9. 完整示范,是,运行结果
 08-完整GPT训练与生成/assets/crops/01-41-20-generated-output.png,01:41:20,M136,生成结果,最终生成文本,是,是,15,9. 完整示范,是,运行结果
 09-GPT与ChatGPT/assets/crops/01-42-55-decoder-only.png,01:42:55,M137,架构图,decoder only定位,是,是,16,3. 不使用术语的直观例子,是,概念画面
-09-GPT与ChatGPT/assets/crops/01-49-18-pretrain-finetune.png,01:49:18,M149,流程,预训练微调阶段,是,是,17,视频关键片段与画面,是,正文视频证据
+09-GPT与ChatGPT/assets/crops/01-50-48-gpt3-175b.png,01:50:48,M152,论文表,GPT3 175B参数,是,是,17,4. 跟着完成最小代码,是,来源材料
+09-GPT与ChatGPT/assets/crops/01-54-30-alignment-summary.png,01:54:30,M159,流程图,对齐完整流程,是,是,17,7. 为什么这样设计,是,来源材料
