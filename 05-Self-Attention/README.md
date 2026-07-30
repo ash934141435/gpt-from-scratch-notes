@@ -8,4 +8,4 @@
 - [第 10 章：单头 Self-Attention](../course/10-单头Self-Attention/README.md)
 - [第 11 章：Attention 的规则和缩放](../course/11-Attention规则与缩放/README.md)
 
-本目录中的 V4、V5 和截图继续保留。
+V4、V5 已分别移入新版第 08、10 章；本目录只保留旧导航和仍被正文引用的截图素材。

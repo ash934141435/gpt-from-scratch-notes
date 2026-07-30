@@ -67,7 +67,7 @@ print(logits.shape, loss.item())
 运行主线 V2：
 
 ```bash
-python 03-Bigram语言模型/code/V2-bigram-model.py
+python course/04-第一个Bigram模型/code/V2-bigram-model.py
 ```
 
 ## 6. 每行代码在做什么

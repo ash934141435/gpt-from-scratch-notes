@@ -2,4 +2,4 @@
 
 正文已迁移到[第 12 章：Multi-Head Attention](../course/12-Multi-Head-Attention/README.md)。
 
-本目录中的 V6 与截图继续保留。
+V6 已移入[新版第 12 章](../course/12-Multi-Head-Attention/README.md)；本目录只保留旧导航和仍被正文引用的截图素材。

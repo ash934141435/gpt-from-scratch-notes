@@ -58,10 +58,10 @@ generated = model.generate(context, max_new_tokens=20)
 print(generated.shape)
 ```
 
-V2 已包含完整生成：
+本章继续使用第 04 章的 V2，因为这个版本同时包含 Bigram 模型和完整生成循环：
 
 ```bash
-python 03-Bigram语言模型/code/V2-bigram-model.py
+python course/04-第一个Bigram模型/code/V2-bigram-model.py
 ```
 
 ## 6. 每行代码在做什么

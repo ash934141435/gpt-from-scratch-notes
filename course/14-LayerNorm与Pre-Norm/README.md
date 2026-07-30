@@ -64,6 +64,12 @@ class Block(nn.Module):
         return x
 ```
 
+运行本章完整 V9：
+
+```bash
+python course/14-LayerNorm与Pre-Norm/code/V9-transformer-block.py
+```
+
 ## 6. 每行代码在做什么
 
 - `nn.LayerNorm(C)` 表示最后 C 个特征是一组。

@@ -43,7 +43,22 @@
 
 ## 代码主线
 
-`V0 → V1 → … → V10` 是必学主线。版本文件保留在原章节目录中，课程正文会在需要时直接链接。V10 是课程终点；[V11 结课工程](../capstone/README.md)中的固定评估、perplexity、checkpoint、temperature 和 top-k 都是选学，不影响结课。
+`V0 → V1 → … → V10` 是必学主线。每个版本放在首次要求运行它的新版章节中：
+
+| 新版章节 | 代码版本 | 说明 |
+|---|---|---|
+| [02](./02-文本如何变成数字/README.md) | [V0](./02-文本如何变成数字/code/V0-text-vocabulary.py) | 文本、词表和编码/解码 |
+| [03](./03-如何制作训练题目/README.md) | [V1](./03-如何制作训练题目/code/V1-data-pipeline.py) | 训练数据与 x/y batch |
+| [04](./04-第一个Bigram模型/README.md) | [V2](./04-第一个Bigram模型/code/V2-bigram-model.py) | Bigram 模型；第 05 章继续使用同一版本学习生成 |
+| [06](./06-模型如何学习/README.md) | [V3](./06-模型如何学习/code/V3-trained-bigram.py) | 训练循环与评估 |
+| [08](./08-矩阵乘法与因果Mask/README.md) | [V4](./08-矩阵乘法与因果Mask/code/V4-prefix-average-demo.py) | 前缀平均、矩阵乘法与因果 Mask |
+| [10](./10-单头Self-Attention/README.md) | [V5](./10-单头Self-Attention/code/V5-single-head-demo.py) | 单头因果 Self-Attention |
+| [12](./12-Multi-Head-Attention/README.md) | [V6](./12-Multi-Head-Attention/code/V6-multi-head-attention.py) | Multi-Head Attention |
+| [13](./13-FeedForward-Block与残差/README.md) | [V7](./13-FeedForward-Block与残差/code/V7-feed-forward.py)、[V8](./13-FeedForward-Block与残差/code/V8-residual-connection.py) | FeedForward 与残差连接 |
+| [14](./14-LayerNorm与Pre-Norm/README.md) | [V9](./14-LayerNorm与Pre-Norm/code/V9-transformer-block.py) | LayerNorm 与完整 Pre-Norm Block |
+| [15](./15-完整GPT组装/README.md) | [V10](./15-完整GPT组装/code/V10-complete-gpt.py) | 完整 Decoder-Only GPT |
+
+没有列出代码版本的章节使用章内最小示例，不需要跳到旧目录找文件。V10 是课程终点；[V11 结课工程](../capstone/README.md)中的固定评估、perplexity、checkpoint、temperature 和 top-k 都是选学，不影响结课。
 
 ## 卡住时去哪里
 

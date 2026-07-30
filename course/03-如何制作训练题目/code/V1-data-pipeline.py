@@ -5,7 +5,7 @@ from pathlib import Path
 import torch
 
 
-TEXT_PATH = Path(__file__).resolve().parents[2] / "sources/ng-video-lecture/input.txt"
+TEXT_PATH = Path(__file__).resolve().parents[3] / "sources/ng-video-lecture/input.txt"
 text = TEXT_PATH.read_text(encoding="utf-8")
 
 chars = sorted(set(text))

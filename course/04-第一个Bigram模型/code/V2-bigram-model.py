@@ -8,7 +8,7 @@ from torch.nn import functional as F
 
 
 torch.manual_seed(1337)
-text = (Path(__file__).resolve().parents[2] / "sources/ng-video-lecture/input.txt").read_text(encoding="utf-8")
+text = (Path(__file__).resolve().parents[3] / "sources/ng-video-lecture/input.txt").read_text(encoding="utf-8")
 chars = sorted(set(text))
 vocab_size = len(chars)
 stoi = {char: index for index, char in enumerate(chars)}

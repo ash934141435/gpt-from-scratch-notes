@@ -9,7 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 scripts = []
 for number in range(12):
-    pattern = f"capstone/V{number}-*.py" if number == 11 else f"[0-9][0-9]-*/code/V{number}-*.py"
+    pattern = f"capstone/V{number}-*.py" if number == 11 else f"course/*/code/V{number}-*.py"
     matches = list(ROOT.glob(pattern))
     if len(matches) != 1:
         raise SystemExit(f"V{number}: expected one script, found {len(matches)}")

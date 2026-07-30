@@ -9,7 +9,7 @@ from torch.nn import functional as F
 
 torch.manual_seed(1337)
 device = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
-text = (Path(__file__).resolve().parents[2] / "sources/ng-video-lecture/input.txt").read_text(encoding="utf-8")
+text = (Path(__file__).resolve().parents[3] / "sources/ng-video-lecture/input.txt").read_text(encoding="utf-8")
 chars = sorted(set(text))
 stoi = {char: index for index, char in enumerate(chars)}
 itos = {index: char for index, char in enumerate(chars)}

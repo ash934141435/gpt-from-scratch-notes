@@ -53,7 +53,7 @@ class MultiHeadAttention(nn.Module):
 运行 V6：
 
 ```bash
-python 06-Multi-Head-Attention/code/V6-multi-head-attention.py
+python course/12-Multi-Head-Attention/code/V6-multi-head-attention.py
 ```
 
 ## 6. 每行代码在做什么

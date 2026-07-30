@@ -46,7 +46,7 @@
 运行三种等价实现：
 
 ```bash
-python 05-Self-Attention/code/V4-prefix-average-demo.py
+python course/08-矩阵乘法与因果Mask/code/V4-prefix-average-demo.py
 ```
 
 核心代码：
