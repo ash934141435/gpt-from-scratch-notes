@@ -110,9 +110,10 @@ def linked_course_images() -> dict[str, tuple[str, str]]:
     return linked
 
 
-def evidence_role(row: dict[str, str], migrated: bool) -> str:
-    if not migrated:
-        return row.get("evidence_role", "正文视频证据")
+def evidence_role(row: dict[str, str]) -> str:
+    existing = row.get("evidence_role", "")
+    if existing in {"运行结果", "概念画面", "来源材料"}:
+        return existing
     description = f"{row.get('type', '')} {row.get('focus', '')}"
     if "论文" in description or "来源" in description:
         return "来源材料"
@@ -132,11 +133,10 @@ def migrate_screenshot_index() -> None:
         if not used:
             continue
         number, learner_section = linked[row["image_file"]]
-        uses_new_template = learner_section != "4. 视频关键片段与画面"
         row["learner_chapter"] = number
         row["learner_section"] = learner_section
         row["used_in_new_text"] = "是"
-        row["evidence_role"] = evidence_role(row, uses_new_template)
+        row["evidence_role"] = evidence_role(row)
         migrated_rows.append(row)
 
     additions = ["learner_chapter", "learner_section", "used_in_new_text", "evidence_role"]

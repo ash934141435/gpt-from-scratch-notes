@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-"""新版 18 章顺序断裂扫描：找出“冒号承诺后被标题或图片截断”。
+"""新版 18 章顺序断裂扫描：找出“冒号承诺后被标题或孤立图注截断”。
 
 检查项：
 1. promise-break：正文行以全角冒号"："结尾（承诺后面紧跟内容），
-   但在兑现内容（列表、代码块、普通段落）之前先出现了小节标题或截图。
+   但在兑现内容（列表、代码块、普通段落或配有上下文的截图）之前先出现了小节标题或孤立图注。
 用法：python qa/order_break_check.py
 输出：控制台摘要 + qa/order-break-report.md
 """
@@ -36,10 +36,8 @@ CHAPTER_DIRS = [
     "course/17-从预训练到ChatGPT",
 ]
 
-# 迁移前的截图元信息和迁移后的标准图注都属于图片附属内容
-IMG_META_RE = re.compile(
-    r"^(?:\*\*(视频时间|重点看|它说明)：|\*图：.+（原视频 M\d{3}，\d{2}:\d{2}:\d{2}）\*$)"
-)
+# 标准图注属于图片附属内容，不算承诺的兑现
+IMG_META_RE = re.compile(r"^\*图：.+（原视频 M\d{3}，\d{2}:\d{2}:\d{2}）\*$")
 IMG_RE = re.compile(r"^!\[.*\]\(.*\)\s*$")
 HEADING_RE = re.compile(r"^#{2,4}\s")
 PROMISE_MAX_LEN = 80  # 承诺行一般很短；过长的是普通叙述，跳过以降低误报
@@ -89,8 +87,11 @@ def scan_file(path: Path):
             if HEADING_RE.match(t):
                 blocker = f"第 {j + 1} 行小节标题「{t}」"
                 break
-            if IMG_RE.match(t) or IMG_META_RE.match(t):
-                blocker = f"第 {j + 1} 行截图或其元信息"
+            if IMG_RE.match(t):
+                # 新模板允许引导句直接兑现为图片；图片后的图注和分析由 check.py 严格验证。
+                break
+            if IMG_META_RE.match(t):
+                blocker = f"第 {j + 1} 行孤立图注"
                 break
             # 普通文本行 / 列表项 = 承诺已兑现
             break

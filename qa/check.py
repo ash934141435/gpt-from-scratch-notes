@@ -164,7 +164,7 @@ common_headings = (
     "暂时不用懂什么",
 )
 
-migrated_chapters: set[str] = set()
+video_chapters: set[str] = set()
 course_texts: dict[str, str] = {}
 for number, directory, title, first, last in CHAPTERS:
     path = COURSE / directory / "README.md"
@@ -178,9 +178,16 @@ for number, directory, title, first, last in CHAPTERS:
         errors.append(f"wrong or missing source_mode in chapter {number}")
     if title not in text.splitlines()[0]:
         errors.append(f"chapter title mismatch: {number}")
-    for heading in common_headings:
-        if not re.search(rf"^## \d+\. {re.escape(heading)}$", text, re.MULTILINE):
-            errors.append(f"chapter {number} missing template heading: {heading}")
+    expected_headings = [
+        f"{index}. {heading}" for index, heading in enumerate(common_headings, start=1)
+    ]
+    if number != "00":
+        expected_headings.append("14. 原视频定位与 M 映射")
+    actual_headings = re.findall(r"^## (\d+\. .+)$", text, re.MULTILINE)
+    if actual_headings != expected_headings:
+        errors.append(
+            f"chapter {number} heading sequence mismatch: expected {expected_headings}, got {actual_headings}"
+        )
 
     fill_section = section(text, "填空模仿")
     task_section = section(text, "独立小任务")
@@ -199,22 +206,17 @@ for number, directory, title, first, last in CHAPTERS:
             errors.append("foundation chapter must not require screenshot evidence")
         continue
 
-    if new_mapping_section:
-        migrated_chapters.add(number)
-        mapping_section = new_mapping_section
-        if video_section or old_mapping_section:
-            errors.append(f"migrated chapter {number} still contains legacy video sections")
-        if not re.search(
-            r"^\| M \| 原视频时间 \| 本章用途 \|$", mapping_section, re.MULTILINE
-        ):
-            errors.append(f"migrated chapter {number} has a non-standard mapping table")
-    else:
-        mapping_section = old_mapping_section
-        if not video_section or not mapping_section:
-            errors.append(f"video chapter {number} missing video/mapping conditional sections")
-            continue
-        if len(re.findall(r"`[^`]*\d{1,2}:\d{2}[^`]*`", video_section)) < 2:
-            errors.append(f"video chapter {number} has too few inline key timestamps")
+    video_chapters.add(number)
+    mapping_section = new_mapping_section
+    if video_section or old_mapping_section:
+        errors.append(f"chapter {number} still contains legacy video sections")
+    if not mapping_section:
+        errors.append(f"video chapter {number} is missing the final M mapping section")
+        continue
+    if not re.search(
+        r"^\| M \| 原视频时间 \| 本章用途 \|$", mapping_section, re.MULTILINE
+    ):
+        errors.append(f"chapter {number} has a non-standard mapping table")
     assert first is not None and last is not None
     expected_chapter_ids = [f"M{value:03d}" for value in range(first, last + 1)]
     written_ids = re.findall(r"M\d{3}", mapping_section)
@@ -240,6 +242,8 @@ for row in term_rows:
 
 # 截图新版双向索引。公开仓库只保留新版正文实际引用的裁剪图。
 screenshots = read_csv(ROOT / "qa/screenshot-index.csv")
+if len(screenshots) != 27:
+    errors.append(f"expected exactly 27 teaching screenshots, got {len(screenshots)}")
 required_screenshot_fields = {
     "learner_chapter",
     "learner_section",
@@ -285,7 +289,7 @@ for number, directory, _, _, _ in CHAPTERS:
             "caption_timestamp": caption_match.group(2) if caption_match else "",
         }
 
-        if number in migrated_chapters:
+        if number in video_chapters:
             if not before or not is_explanatory_prose(before[-1]):
                 errors.append(f"migrated screenshot lacks introductory prose: {resolved}")
             if not caption_match:
@@ -309,7 +313,7 @@ for row in screenshots:
             )
         if not row["learner_section"] or not row["evidence_role"]:
             errors.append(f"used screenshot lacks learner metadata: {image_file}")
-        if linked_images[image_file] in migrated_chapters:
+        if linked_images[image_file] in video_chapters:
             context = linked_image_context[image_file]
             if row["learner_section"] != context["section"]:
                 errors.append(f"screenshot section mismatch: {image_file}")
@@ -319,6 +323,13 @@ for row in screenshots:
                 errors.append(f"screenshot caption M ID mismatch: {image_file}")
             if row["timestamp"] != context["caption_timestamp"]:
                 errors.append(f"screenshot caption timestamp mismatch: {image_file}")
+            if expected_by_id.get(row["micro_id"]) != row["learner_chapter"]:
+                errors.append(f"screenshot M ID is outside its learner chapter: {image_file}")
+            source = timeline_by_id.get(row["micro_id"])
+            if source and not (
+                seconds(source["start"]) <= seconds(row["timestamp"]) <= seconds(source["end"])
+            ):
+                errors.append(f"screenshot timestamp is outside its M interval: {image_file}")
 
 for image_file in linked_images:
     if image_file not in indexed:
