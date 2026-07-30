@@ -1,6 +1,7 @@
 ﻿image_file,timestamp,micro_id,type,focus,cropped,used_in_text,learner_chapter,learner_section,used_in_new_text,evidence_role
 01-课程介绍与数据准备/assets/crops/00-05-15-generated-preview.png,00:05:15,M009,终端输出,字符级模型生成结果,是,是,01,9. 完整示范,是,运行结果
-05-Self-Attention/assets/crops/01-05-34-qk-shapes.png,01:05:34,M087,代码,key和query的shape注释,是,否,10,视频关键片段与画面,是,正文视频证据
+05-Self-Attention/assets/crops/01-05-34-qk-shapes.png,01:05:34,M087,代码,key和query的shape注释,是,否,10,6. Shape 变化卡片,是,概念画面
+05-Self-Attention/assets/crops/01-09-49-softmax-distribution.png,01:09:49,M092,代码与输出,未来权重为零且允许位置归一化,是,是,10,9. 完整示范,是,运行结果
 02-字符编码与训练数据/assets/crops/00-08-58-vocabulary.png,00:08:58,M013,代码与输出,字符词表与词表大小,是,是,02,3. 不使用术语的直观例子,是,运行结果
 02-字符编码与训练数据/assets/crops/00-16-22-shifted-xy.png,00:16:22,M022,代码,输入目标错位切片,是,是,03,6. Shape 变化卡片,是,概念画面
 02-字符编码与训练数据/assets/crops/00-20-09-batch-output.png,00:20:09,M028,代码与输出,四乘八batch输出,是,是,03,9. 完整示范,是,运行结果
