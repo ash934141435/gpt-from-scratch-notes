@@ -21,15 +21,21 @@
 
 同一个字符出现在位置 0 与位置 5 时，token 表示相同，但位置表示不同。把两者逐项相加，就同时携带“我是谁”和“我在哪里”。
 
-## 4. 视频关键片段与画面
+模型在内部先合并“内容”和“位置”，处理完成后再映射回词表候选：
 
-- `58:17–60:23`（M077–M079）：引入 `n_embd=C`，`lm_head` 从 C 回到 V。
-- `60:23–62:02`（M080–M082）：位置表、`arange` 和 `[B,T,C]+[T,C]` 广播。
-- `62:02–64:41`（M083–M085）：Bigram 的位置限制、固定平均问题和 Q/K 过渡。
+```mermaid
+flowchart LR
+    A["token IDs [B,T]"] --> B["Token Embedding<br/>[B,T,C]"]
+    C["位置 IDs [T]"] --> D["Position Embedding<br/>[T,C]"]
+    B --> E["逐项相加 x<br/>[B,T,C]"]
+    D --> E
+    E --> F["后续模型计算"]
+    F --> G["lm_head<br/>[B,T,V]"]
+```
 
-![token embedding 与位置表](../../05-Self-Attention/assets/crops/01-00-45-position-table.png)
+V 只在输入查表和输出候选处出现；模型主体始终使用宽度 C。位置向量通过广播复用于每个 batch，但不同时间位置查到不同的行。
 
-## 5. 跟着完成最小代码
+## 4. 跟着完成最小代码
 
 ```python
 import torch
@@ -50,7 +56,7 @@ logits = lm_head(x)
 print(idx.shape, tok.shape, pos.shape, x.shape, logits.shape)
 ```
 
-## 6. 每行代码在做什么
+## 5. 每行代码在做什么
 
 - `V` 是可选 token 种类数；`C` 是每个 token 在模型内部携带的数字数。
 - `nn.Embedding(V,C)` 有 V 行 C 列；token ID 只用来选行。
@@ -59,7 +65,7 @@ print(idx.shape, tok.shape, pos.shape, x.shape, logits.shape)
 - `[B,T,C] + [T,C]` 时，PyTorch 把同一套位置向量复制给每个 batch。
 - `nn.Linear(C,V)` 对每个位置独立把 C 个特征变成 V 个候选 logits。
 
-## 7. Shape 变化卡片
+## 6. Shape 变化卡片
 
 ```text
 token IDs                         [B,T]
@@ -72,7 +78,15 @@ lm_head                           [B,T,V]
 
 旧 Bigram 中 Embedding 直接是 `[V,V]`。现在拆成 `[V,C]` 和 `Linear(C,V)`，中间空间不必与词表一样宽。
 
-## 8. 为什么这样设计
+视频在这里把 token 表和新加入的位置表放在同一段模型初始化代码中，便于核对两张表的行列职责：
+
+![Token Embedding 与位置 Embedding 表](../../05-Self-Attention/assets/crops/01-00-45-position-table.png)
+
+*图：模型同时建立 token 表和 position 表（原视频 M080，01:00:45）*
+
+需要关注的是两张表的第一维来源不同：token 表按 V 个字符建行，位置表按 `block_size` 个位置建行；它们的第二维都等于 C，才能逐项相加。
+
+## 7. 为什么这样设计
 
 ID 大小没有语义，Embedding 给模型一个可学习的连续表示空间。位置表示是必要的，因为 Attention 自己只看内容匹配，交换两个位置后不会天然知道先后。
 
@@ -80,7 +94,7 @@ Token 与位置使用加法而非拼接，可保持宽度 C 不变，使后续�
 
 固定平均虽然能传递历史，却无论内容都给同样权重。下一章让当前 token 根据内容决定读谁。
 
-## 9. 常见误解与报错
+## 8. 常见误解与报错
 
 - V 和 C 不再是同一个量；不要把 `[B,T,C]` 直接送入需要 `[B,T,V]` 的 loss。
 - T 是当前实际长度，不能超过位置表容量 `block_size`。
@@ -89,7 +103,7 @@ Token 与位置使用加法而非拼接，可保持宽度 C 不变，使后续�
 - 位置 embedding 不是 mask：它告诉模型位置，不能禁止未来信息。
 - token ID 不是 embedding 向量；查表之后才得到 C 个数。
 
-## 10. 完整示范
+## 9. 完整示范
 
 ```python
 import torch
@@ -111,7 +125,7 @@ assert torch.allclose(x[0, 0] - tok[0, 0], x[1, 0] - tok[1, 0])
 
 最后一个断言说明两个 batch 的位置 0 加的是同一个位置向量。
 
-## 11. 填空模仿
+## 10. 填空模仿
 
 ```python
 token_table = nn.Embedding(____, ____)
@@ -124,7 +138,7 @@ logits = nn.Linear(C, ____)(x)
 
 参考答案：`V`、`C`、`C`、`arange`、`+`、`V`。
 
-## 12. 独立小任务
+## 11. 独立小任务
 
 设 `B=3,T=5,V=20,C=8`：
 
@@ -135,7 +149,7 @@ logits = nn.Linear(C, ____)(x)
 
 参考 Shape：token 表 `[20,8]`，位置表至少 `[5,8]`，tok `[3,5,8]`，pos `[5,8]`，x `[3,5,8]`，logits `[3,5,20]`。
 
-## 13. 过关标准
+## 12. 过关标准
 
 - 能区分 token ID、V、T 与 C；
 - 能画出 ID → token/position 表示 → `[B,T,C]` → logits 的路线；
@@ -143,13 +157,13 @@ logits = nn.Linear(C, ____)(x)
 - 能说明位置编码和因果 mask 解决不同问题；
 - 能说明固定平均为何不能按内容选择历史。
 
-## 14. 暂时不用懂什么
+## 13. 暂时不用懂什么
 
 暂时不用懂正弦位置编码、RoPE、权重绑定和高维空间几何。下一章只用线性层从 `[B,T,C]` 产生 Q、K、V。
 
-## 15. 视频时间与 M 映射
+## 14. 原视频定位与 M 映射
 
-| M | 时间 | 本章用途 |
+| M | 原视频时间 | 本章用途 |
 |---|---|---|
 | M077 | 00:58:17–00:59:21 | `n_embd` 中间空间 |
 | M078 | 00:59:21–01:00:00 | `lm_head` 映射回 V |
