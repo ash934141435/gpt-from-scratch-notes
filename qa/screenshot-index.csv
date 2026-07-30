@@ -6,7 +6,8 @@
 02-字符编码与训练数据/assets/crops/00-20-09-batch-output.png,00:20:09,M028,代码与输出,四乘八batch输出,是,是,03,9. 完整示范,是,运行结果
 03-Bigram语言模型/assets/crops/00-28-15-ln65.png,00:28:15,M039,代码与输出,初始loss约4.8786,是,是,04,7. 为什么这样设计,是,运行结果
 03-Bigram语言模型/assets/crops/00-34-15-random-output.png,00:34:15,M047,代码与输出,未训练Bigram乱码,是,是,05,9. 完整示范,是,运行结果
-04-训练循环与模型评估/assets/crops/00-35-55-training-loop.png,00:35:55,M049,代码,训练循环五个动作,是,是,06,视频关键片段与画面,是,正文视频证据
+04-训练循环与模型评估/assets/crops/00-37-30-loss-result.png,00:37:30,M051,运行结果,loss约2.57及局部文本结构,是,是,06,9. 完整示范,是,运行结果
+04-训练循环与模型评估/assets/crops/00-42-05-loss-output.png,00:42:05,M055,运行结果,train val loss同步改善,是,是,06,7. 为什么这样设计,是,运行结果
 05-Self-Attention/assets/crops/00-42-40-token-communication.png,00:42:40,M056,代码,BTC玩具张量,是,是,07,视频关键片段与画面,是,正文视频证据
 05-Self-Attention/assets/crops/00-47-30-tril-code.png,00:47:30,M062,代码与输出,矩阵乘法玩具例子,是,是,08,视频关键片段与画面,是,正文视频证据
 05-Self-Attention/assets/crops/01-00-45-position-table.png,01:00:45,M080,代码,position embedding table,是,是,09,视频关键片段与画面,是,正文视频证据
