@@ -23,16 +23,17 @@
 
 LayerNorm 对每个 token 自己的 C 个特征做这件事。它不需要读取其他 token 或其他 batch。
 
-## 4. 视频关键片段与画面
+先用一张方向表固定两种归一化的区别：
 
-- `92:44–93:58`（M121–M122）：从 BatchNorm 出发，跨样本按特征归一化。
-- `93:58–95:14`（M123–M124）：LayerNorm 改为每个样本/位置的特征归一化，保留 gamma/beta。
-- `95:14–96:23`（M125–M126）：post-norm 与 pre-norm，两个 LayerNorm 接线。
-- `96:23–97:49`（M127–M128）：统计 C 轴和 final LayerNorm。
+| 对比 | BatchNorm 的直观方向 | 本课 LayerNorm 的方向 |
+|---|---|---|
+| 一组统计量覆盖谁 | 同一特征的多条样本，像按列统计 | 一个 token 的 C 个特征，像按行统计 |
+| 是否依赖其他样本 | 是 | 否 |
+| `[B,T,C]` 中本课关心的轴 | 不是本章采用的方案 | 最后一个 C 轴 |
 
-![LayerNorm 按行统计](../../07-Transformer-Block/assets/crops/01-34-15-layernorm-rows.png)
+“按行/按列”只用于理解视频里的二维玩具矩阵。回到模型张量时，应准确说 LayerNorm 为每个 `(b,t)` 单独统计最后 C 个特征。
 
-## 5. 跟着完成最小代码
+## 4. 跟着完成最小代码
 
 ```python
 import torch
@@ -70,7 +71,7 @@ class Block(nn.Module):
 python course/14-LayerNorm与Pre-Norm/code/V9-transformer-block.py
 ```
 
-## 6. 每行代码在做什么
+## 5. 每行代码在做什么
 
 - `nn.LayerNorm(C)` 表示最后 C 个特征是一组。
 - 对 `[B,T,C]`，它为每个 `(b,t)` 单独计算均值与方差。
@@ -88,7 +89,7 @@ output = gamma * normalized + beta
 
 epsilon 是防止分母为 0 的很小正数。
 
-## 7. Shape 变化卡片
+## 6. Shape 变化卡片
 
 ```text
 x                              [B,T,C]
@@ -99,13 +100,37 @@ gamma / beta 参数              [C]
 
 LayerNorm 不改变 Shape，也不混合 T。BatchNorm 的典型统计方向不同，不能只看两者名字中的 “Norm”。
 
-## 8. 为什么这样设计
+视频先用二维矩阵展示 BatchNorm 的列方向统计：
+
+![BatchNorm 在玩具矩阵中按列统计](../../07-Transformer-Block/assets/crops/01-33-35-batchnorm-columns.png)
+
+*图：BatchNorm 跨样本按同一特征列计算统计量（原视频 M122，01:33:35）*
+
+这时同一列的不同样本会共同影响均值和方差，因此一条样本的归一化结果依赖其他样本。
+
+随后把统计方向转到每条样本自身的特征行，就得到本章需要的 LayerNorm 直觉：
+
+![LayerNorm 在玩具矩阵中按行统计](../../07-Transformer-Block/assets/crops/01-34-15-layernorm-rows.png)
+
+*图：LayerNorm 为每一行独立计算均值和方差（原视频 M123，01:34:15）*
+
+对应到 `[B,T,C]`，每一行就是一个 `(b,t)` token 的 C 维向量。两张图连续对照，比单独记忆 “LayerNorm 用最后一轴”更容易检查代码。
+
+## 7. 为什么这样设计
 
 归一化让不同层收到的数值尺度更稳定，通常更容易优化。gamma/beta 允许模型在有用时恢复或改变尺度，因此不是把所有信息永久固定成均值 0、方差 1。
 
 原始 Transformer 论文常画 post-norm：`LayerNorm(x+F(x))`；课程采用现代常见 pre-norm：`x+F(LayerNorm(x))`。Pre-norm 为残差主路保留更直接的恒等通道。本课只要求理解数据流差异，不声称某一种在所有设置都绝对更好。
 
-## 9. 常见误解与报错
+视频把两种接线并排画出，区别只在 LayerNorm 相对分支 F 和残差加法的位置：
+
+![Post-Norm 与 Pre-Norm 接线对照](../../07-Transformer-Block/assets/crops/01-35-30-pre-post-norm.png)
+
+*图：Post-Norm 与 Pre-Norm 的数据流位置差异（原视频 M125，01:35:30）*
+
+课程代码采用 `x + F(LayerNorm(x))`。检查 Block 时应沿残差主路确认 x 能直接到达加法节点，同时确认 Attention 和 FFN 各有独立的 LayerNorm。
+
+## 8. 常见误解与报错
 
 - LayerNorm 不是跨 batch 统计，不依赖 batch 大小。
 - 对 `[B,T,C]` 时统计最后 C 轴，不是整个 B×T×C。
@@ -115,7 +140,7 @@ LayerNorm 不改变 Shape，也不混合 T。BatchNorm 的典型统计方向不�
 - final LayerNorm 不替代 Block 内的两个 LayerNorm。
 - pre/post 指归一化相对子层和残差加法的位置，不是训练前后阶段。
 
-## 10. 完整示范
+## 9. 完整示范
 
 ```python
 import torch
@@ -133,7 +158,7 @@ assert torch.allclose(y1.mean(dim=-1), torch.zeros(2, 4), atol=1e-5)
 
 初始时两个层的 gamma/beta 相同，所以 y1/y2 数值可相同；对象和参数仍是独立的，训练后可分化。
 
-## 11. 填空模仿
+## 10. 填空模仿
 
 ```python
 self.ln1 = nn.LayerNorm(____)
@@ -147,7 +172,7 @@ def forward(self, x):
 
 参考答案：`C`、`C`、`ln1`、`ln2`。
 
-## 12. 独立小任务
+## 11. 独立小任务
 
 1. 手算 `[1,2,3]` 的均值、方差和未带 gamma/beta 的标准化近似值；
 2. 对随机 `[2,3,4]` 张量运行 `LayerNorm(4)`，核对最后轴均值/方差；
@@ -156,7 +181,7 @@ def forward(self, x):
 
 手算参考：均值 2，方差 2/3，标准化约 `[-1.225,0,1.225]`（忽略 epsilon）。
 
-## 13. 过关标准
+## 12. 过关标准
 
 - 能从一行数字计算均值、方差和标准化；
 - 能区分 BatchNorm 与 LayerNorm 的统计方向；
@@ -165,13 +190,13 @@ def forward(self, x):
 - 能画出 pre-norm 与 post-norm；
 - 能说明两个 LayerNorm 不共享参数。
 
-## 14. 暂时不用懂什么
+## 13. 暂时不用懂什么
 
 暂时不用懂 RMSNorm、数值稳定证明、归一化消融实验和大模型规范化变体。下一章不再引入新结构，只把已学模块组装完整。
 
-## 15. 视频时间与 M 映射
+## 14. 原视频定位与 M 映射
 
-| M | 时间 | 本章用途 |
+| M | 原视频时间 | 本章用途 |
 |---|---|---|
 | M121 | 01:32:44–01:33:20 | BatchNorm 过渡 |
 | M122 | 01:33:20–01:33:58 | 跨样本按特征统计 |

@@ -16,7 +16,9 @@
 05-Self-Attention/assets/crops/01-18-45-softmax-variance.png,01:18:45,M101,运行结果,softmax尖锐度,是,是,11,7. 为什么这样设计,是,运行结果
 06-Multi-Head-Attention/assets/crops/01-24-42-transformer-paper.png,01:24:42,M108,架构图,Transformer组件定位,是,是,12,7. 为什么这样设计,是,来源材料
 07-Transformer-Block/assets/crops/01-29-30-residual-diagram.png,01:29:30,M116,概念图,残差主干与分支,是,是,13,7. 为什么这样设计,是,概念画面
-07-Transformer-Block/assets/crops/01-34-15-layernorm-rows.png,01:34:15,M123,代码与输出,LayerNorm按行统计,是,是,14,视频关键片段与画面,是,正文视频证据
+07-Transformer-Block/assets/crops/01-33-35-batchnorm-columns.png,01:33:35,M122,代码与输出,BatchNorm按列统计,是,是,14,6. Shape 变化卡片,是,运行结果
+07-Transformer-Block/assets/crops/01-34-15-layernorm-rows.png,01:34:15,M123,代码与输出,LayerNorm按行统计,是,是,14,6. Shape 变化卡片,是,运行结果
+07-Transformer-Block/assets/crops/01-35-30-pre-post-norm.png,01:35:30,M125,架构图,pre norm与post norm,是,是,14,7. 为什么这样设计,是,概念画面
 08-完整GPT训练与生成/assets/crops/01-39-48-scaled-hyperparameters.png,01:39:48,M133,代码与参数,最终规模超参数,是,是,15,视频关键片段与画面,是,正文视频证据
 09-GPT与ChatGPT/assets/crops/01-42-55-decoder-only.png,01:42:55,M137,架构图,decoder only定位,是,是,16,视频关键片段与画面,是,正文视频证据
 09-GPT与ChatGPT/assets/crops/01-49-18-pretrain-finetune.png,01:49:18,M149,流程,预训练微调阶段,是,是,17,视频关键片段与画面,是,正文视频证据
