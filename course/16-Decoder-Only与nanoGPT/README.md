@@ -22,16 +22,32 @@ Cross-Attention：英语位置去法语表示中检索信息
 
 普通 GPT 续写只有一条 token 流：prompt 已经是同一序列的前缀，后续输出继续接在后面。所以它不需要独立 Encoder 和 Cross-Attention。
 
-## 4. 视频关键片段与画面
+两种架构最关键的差异是有几条输入流，以及目标侧是否需要单独读取来源侧：
 
-- `1:42:43–1:43:45`（M137–M138）：课堂模型是因果 decoder-only，原论文为翻译设计双塔。
-- `1:43:45–1:45:53`（M139–M142）：START/END、源/目标条件、无 mask Encoder 和 Cross-Attention。
-- `1:45:53–1:46:26`（M143）：GPT 只保留 decoder 主干。
-- `1:46:26–1:49:00`（M144–M148）：nanoGPT 的训练工程、合并 QKV、四维头、MLP/Block 与生成。
+```mermaid
+flowchart TB
+    subgraph Original["原始 Encoder–Decoder 翻译"]
+        S["完整源句"] --> E["双向 Encoder"]
+        T["目标前缀"] --> D["因果 Decoder"]
+        E --> C["Cross-Attention"]
+        D --> C
+        C --> O["下一个目标 token"]
+    end
+    subgraph GPT["Decoder-Only GPT"]
+        P["prompt + 已生成 token"] --> M["因果 Decoder Blocks"]
+        M --> N["下一个 token"]
+    end
+```
 
-![Decoder-only 在原 Transformer 图中的位置](../../09-GPT与ChatGPT/assets/crops/01-42-55-decoder-only.png)
+视频在原 Transformer 图上标出课程模型保留的 decoder 主干，可以把抽象对照落到真实架构位置：
 
-## 5. 跟着完成最小代码
+![Decoder-Only 在原始 Transformer 架构中的位置](../../09-GPT与ChatGPT/assets/crops/01-42-55-decoder-only.png)
+
+*图：课程 GPT 只保留原架构中的因果 decoder 主干（原视频 M137，01:42:55）*
+
+这里的“只保留 decoder”是架构定位，不是删到只剩一个输出层。Embedding、masked self-attention、FFN、残差和 LayerNorm 都仍在 decoder Block 中。
+
+## 4. 跟着完成最小代码
 
 用 Shape 模拟不同源/目标长度：
 
@@ -53,7 +69,7 @@ assert out.shape == (B, T_target, H)
 
 这不是新增 Cross-Attention 层实现，只用已学矩阵验证“Q 与 K/V 可来自不同长度”。
 
-## 6. 每行代码在做什么
+## 5. 每行代码在做什么
 
 - Q 的时间轴属于正在生成的目标序列。
 - K/V 的时间轴属于完整来源序列。
@@ -62,7 +78,7 @@ assert out.shape == (B, T_target, H)
 
 nanoGPT 的紧凑写法：一个 Linear 一次产生宽度 `3C`，再切成 q/k/v；把通道 reshape 成 `[B,T,n_head,H]` 并转成 `[B,n_head,T,H]`，一次并行计算所有头。课堂版用 `ModuleList` 显式循环，便于看见每头。
 
-## 7. Shape 变化卡片
+## 6. Shape 变化卡片
 
 ### 原翻译 Cross-Attention
 
@@ -86,7 +102,7 @@ merge heads                  [B,T,C]
 
 这里只是把“多个独立 Head 循环”改成一个显式头轴，数学上仍是每头 QK、mask、softmax、V。
 
-## 8. 为什么这样设计
+## 7. 为什么这样设计
 
 架构由信息是否已经可用决定。Encoder 处理完整已知输入，不需要因果 mask；Decoder 生成未知未来，必须因果；Cross-Attention 让目标侧读取已知源侧。
 
@@ -94,7 +110,7 @@ GPT 把 prompt 与输出放在同一 token 流中：prompt token 位于左边，
 
 nanoGPT 还加入数据加载、分布式训练、混合精度、checkpoint 等工程能力。这些改变效率和可恢复性，不改变本课程已学的核心 Block 数据流。
 
-## 9. 常见误解与报错
+## 8. 常见误解与报错
 
 - decoder-only 不表示“只有输出层”；它仍有 Embedding、Attention、FFN、残差和 LayerNorm。
 - Encoder 无因果 mask 不等于泄漏目标答案；它读取的是已给定源序列。
@@ -104,7 +120,7 @@ nanoGPT 还加入数据加载、分布式训练、混合精度、checkpoint 等�
 - 四维多头是向量化表示，不是多出一层语义结构。
 - V11 的 checkpoint 只是教材工程补充，不属于 M137–M148 的课程代码终点。
 
-## 10. 完整示范
+## 9. 完整示范
 
 用翻译例子列信息来源：
 
@@ -117,7 +133,7 @@ Decoder self-attention：2×2，下三角
 Cross-attention：2×5，每个英语位置读取 5 个法语位置
 ```
 
-## 11. 填空模仿
+## 10. 填空模仿
 
 ```text
 Encoder 的 Q/K/V 来自 ____，通常使用 / 不使用因果 mask。
@@ -128,7 +144,7 @@ Cross-Attention 的 Q 来自 ____，K/V 来自 ____。
 
 参考答案：encoder 输入、不使用；decoder 当前状态、使用；decoder、encoder；`[B,4,7]`。
 
-## 12. 独立小任务
+## 11. 独立小任务
 
 1. 在原 Transformer 图中指出 V10 保留的 masked self-attention、FFN、残差、LayerNorm；
 2. 指出它删除的 Encoder 与 Cross-Attention；
@@ -138,7 +154,7 @@ Cross-Attention 的 Q 来自 ____，K/V 来自 ____。
 
 参考核对：Cross-Attention 的 weights 应为 `[2,6,9]`、输出 `[2,6,8]`；课堂每个 Head 的 H 对应四维实现最后一轴，多个 Head 对应 `n_head` 轴。
 
-## 13. 过关标准
+## 12. 过关标准
 
 - 能区分 Encoder、Decoder、因果注意力和 Cross-Attention；
 - 能用 START/END 解释翻译目标序列；
@@ -147,13 +163,13 @@ Cross-Attention 的 Q 来自 ____，K/V 来自 ____。
 - 能把课堂多头映射到 nanoGPT 合并 QKV 与四维实现；
 - 能说明工程紧凑不等于数学结构不同。
 
-## 14. 暂时不用懂什么
+## 13. 暂时不用懂什么
 
 暂时不用懂分布式数据并行、FlashAttention、混合精度、编译器优化和 nanoGPT 全部配置项。最后一章只建立预训练模型成为助手的概念地图。
 
-## 15. 视频时间与 M 映射
+## 14. 原视频定位与 M 映射
 
-| M | 时间 | 本章用途 |
+| M | 原视频时间 | 本章用途 |
 |---|---|---|
 | M137 | 01:42:43–01:43:20 | decoder-only 定位 |
 | M138 | 01:43:20–01:43:45 | 翻译双塔背景 |
