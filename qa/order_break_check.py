@@ -36,8 +36,10 @@ CHAPTER_DIRS = [
     "course/17-从预训练到ChatGPT",
 ]
 
-# 截图块的固定三行元信息，属于图片附属内容，不算承诺的兑现
-IMG_META_RE = re.compile(r"^\*\*(视频时间|重点看|它说明)：")
+# 迁移前的截图元信息和迁移后的标准图注都属于图片附属内容
+IMG_META_RE = re.compile(
+    r"^(?:\*\*(视频时间|重点看|它说明)：|\*图：.+（原视频 M\d{3}，\d{2}:\d{2}:\d{2}）\*$)"
+)
 IMG_RE = re.compile(r"^!\[.*\]\(.*\)\s*$")
 HEADING_RE = re.compile(r"^#{2,4}\s")
 PROMISE_MAX_LEN = 80  # 承诺行一般很短；过长的是普通叙述，跳过以降低误报

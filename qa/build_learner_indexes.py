@@ -88,38 +88,60 @@ def build_chapter_map() -> None:
     )
 
 
-def linked_course_images() -> set[str]:
-    linked: set[str] = set()
+def linked_course_images() -> dict[str, tuple[str, str]]:
+    """返回图片对应的学习章节，以及图片前最近的 H2/H3 标题。"""
+    linked: dict[str, tuple[str, str]] = {}
     for markdown in (ROOT / "course").rglob("README.md"):
-        text = markdown.read_text(encoding="utf-8")
-        for target in re.findall(r"!\[[^]]*\]\(([^)]+)\)", text):
-            if target.startswith(("http://", "https://")):
+        learner_chapter = markdown.parent.name[:2]
+        learner_section = ""
+        for line in markdown.read_text(encoding="utf-8").splitlines():
+            heading = re.match(r"^#{2,3} (.+)$", line)
+            if heading:
+                learner_section = heading.group(1)
                 continue
-            resolved = (markdown.parent / target).resolve()
-            linked.add(resolved.relative_to(ROOT).as_posix())
+            image = re.match(r"^!\[[^]]*\]\(([^)]+)\)\s*$", line)
+            if not image or image.group(1).startswith(("http://", "https://")):
+                continue
+            resolved = (markdown.parent / image.group(1)).resolve()
+            linked[resolved.relative_to(ROOT).as_posix()] = (
+                learner_chapter,
+                learner_section,
+            )
     return linked
+
+
+def evidence_role(row: dict[str, str], migrated: bool) -> str:
+    if not migrated:
+        return row.get("evidence_role", "正文视频证据")
+    description = f"{row.get('type', '')} {row.get('focus', '')}"
+    if "论文" in description or "来源" in description:
+        return "来源材料"
+    if any(word in description for word in ("输出", "结果", "终端")):
+        return "运行结果"
+    return "概念画面"
 
 
 def migrate_screenshot_index() -> None:
     path = ROOT / "qa/screenshot-index.csv"
     rows = read_csv(path, encoding="utf-8-sig")
     linked = linked_course_images()
-    migrated: list[dict[str, str]] = []
+    migrated_rows: list[dict[str, str]] = []
     for source in rows:
         row = dict(source)
-        _, number, _, _, _ = chapter_for(row["micro_id"])
         used = row["image_file"] in linked
         if not used:
             continue
+        number, learner_section = linked[row["image_file"]]
+        uses_new_template = learner_section != "4. 视频关键片段与画面"
         row["learner_chapter"] = number
-        row["learner_section"] = "视频关键片段与画面"
+        row["learner_section"] = learner_section
         row["used_in_new_text"] = "是"
-        row["evidence_role"] = "正文视频证据"
-        migrated.append(row)
+        row["evidence_role"] = evidence_role(row, uses_new_template)
+        migrated_rows.append(row)
 
     additions = ["learner_chapter", "learner_section", "used_in_new_text", "evidence_role"]
     original = [field for field in rows[0] if field not in additions]
-    write_csv(path, original + additions, migrated)
+    write_csv(path, original + additions, migrated_rows)
 
 
 if __name__ == "__main__":

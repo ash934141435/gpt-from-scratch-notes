@@ -164,6 +164,7 @@ common_headings = (
     "暂时不用懂什么",
 )
 
+migrated_chapters: set[str] = set()
 course_texts: dict[str, str] = {}
 for number, directory, title, first, last in CHAPTERS:
     path = COURSE / directory / "README.md"
@@ -189,19 +190,31 @@ for number, directory, title, first, last in CHAPTERS:
         errors.append(f"chapter {number} independent task has no check/answer")
 
     video_section = section(text, "视频关键片段与画面")
-    mapping_section = section(text, "视频时间与 M 映射")
+    old_mapping_section = section(text, "视频时间与 M 映射")
+    new_mapping_section = section(text, "原视频定位与 M 映射")
     if number == "00":
-        if video_section or mapping_section or re.search(r"M\d{3}", text):
+        if video_section or old_mapping_section or new_mapping_section or re.search(r"M\d{3}", text):
             errors.append("foundation chapter must not contain video evidence or M IDs")
         if re.search(r"!\[[^]]*\]\(", text):
             errors.append("foundation chapter must not require screenshot evidence")
         continue
 
-    if not video_section or not mapping_section:
-        errors.append(f"video chapter {number} missing video/mapping conditional sections")
-        continue
-    if len(re.findall(r"`[^`]*\d{1,2}:\d{2}[^`]*`", video_section)) < 2:
-        errors.append(f"video chapter {number} has too few inline key timestamps")
+    if new_mapping_section:
+        migrated_chapters.add(number)
+        mapping_section = new_mapping_section
+        if video_section or old_mapping_section:
+            errors.append(f"migrated chapter {number} still contains legacy video sections")
+        if not re.search(
+            r"^\| M \| 原视频时间 \| 本章用途 \|$", mapping_section, re.MULTILINE
+        ):
+            errors.append(f"migrated chapter {number} has a non-standard mapping table")
+    else:
+        mapping_section = old_mapping_section
+        if not video_section or not mapping_section:
+            errors.append(f"video chapter {number} missing video/mapping conditional sections")
+            continue
+        if len(re.findall(r"`[^`]*\d{1,2}:\d{2}[^`]*`", video_section)) < 2:
+            errors.append(f"video chapter {number} has too few inline key timestamps")
     assert first is not None and last is not None
     expected_chapter_ids = [f"M{value:03d}" for value in range(first, last + 1)]
     written_ids = re.findall(r"M\d{3}", mapping_section)
@@ -241,14 +254,44 @@ if len(image_paths) != len(set(image_paths)):
     errors.append("screenshot index contains duplicate image paths")
 indexed = {row["image_file"]: row for row in screenshots}
 linked_images: dict[str, str] = {}
+linked_image_context: dict[str, dict[str, str]] = {}
+caption_pattern = re.compile(
+    r"^\*图：.+（原视频 (M\d{3})，(\d{2}:\d{2}:\d{2})）\*$"
+)
+
+
+def is_explanatory_prose(line: str) -> bool:
+    """截图前后的说明必须是普通正文，而不是标题、列表或代码。"""
+    return bool(line) and not re.match(r"^(?:#|[-*|>]|```|\d+\.|!\[)", line)
+
+
 for number, directory, _, _, _ in CHAPTERS:
     path = COURSE / directory / "README.md"
     if not path.exists():
         continue
     text = path.read_text(encoding="utf-8")
-    for target in re.findall(r"!\[[^]]*\]\(([^)]+)\)", text):
+    for image_match in re.finditer(r"!\[[^]]*\]\(([^)]+)\)", text):
+        target = image_match.group(1)
         resolved = (path.parent / target).resolve().relative_to(ROOT).as_posix()
         linked_images[resolved] = number
+        headings = re.findall(r"^#{2,3} (.+)$", text[: image_match.start()], re.MULTILINE)
+        learner_section = headings[-1] if headings else ""
+        before = [line.strip() for line in text[: image_match.start()].splitlines() if line.strip()]
+        after = [line.strip() for line in text[image_match.end() :].splitlines() if line.strip()]
+        caption_match = caption_pattern.fullmatch(after[0]) if after else None
+        linked_image_context[resolved] = {
+            "section": learner_section,
+            "caption_micro_id": caption_match.group(1) if caption_match else "",
+            "caption_timestamp": caption_match.group(2) if caption_match else "",
+        }
+
+        if number in migrated_chapters:
+            if not before or not is_explanatory_prose(before[-1]):
+                errors.append(f"migrated screenshot lacks introductory prose: {resolved}")
+            if not caption_match:
+                errors.append(f"migrated screenshot lacks standard caption: {resolved}")
+            if len(after) < 2 or not is_explanatory_prose(after[1]):
+                errors.append(f"migrated screenshot lacks follow-up analysis: {resolved}")
 
 for row in screenshots:
     image_file = row["image_file"]
@@ -266,6 +309,16 @@ for row in screenshots:
             )
         if not row["learner_section"] or not row["evidence_role"]:
             errors.append(f"used screenshot lacks learner metadata: {image_file}")
+        if linked_images[image_file] in migrated_chapters:
+            context = linked_image_context[image_file]
+            if row["learner_section"] != context["section"]:
+                errors.append(f"screenshot section mismatch: {image_file}")
+            if row["evidence_role"] not in {"运行结果", "概念画面", "来源材料"}:
+                errors.append(f"migrated screenshot has invalid evidence role: {image_file}")
+            if row["micro_id"] != context["caption_micro_id"]:
+                errors.append(f"screenshot caption M ID mismatch: {image_file}")
+            if row["timestamp"] != context["caption_timestamp"]:
+                errors.append(f"screenshot caption timestamp mismatch: {image_file}")
 
 for image_file in linked_images:
     if image_file not in indexed:
