@@ -1,0 +1,14 @@
+# 原始素材（课程视频、字幕、第三方代码），仅本地保留
+sources/
+**/assets/raw/
+qa/legacy-unindexed-assets/
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+
+# 系统文件
+__MACOSX/
+.DS_Store
+Thumbs.db

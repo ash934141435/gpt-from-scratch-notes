@@ -1,0 +1,14 @@
+{
+  "chapter": "08",
+  "questions": [
+    "T×T 权重的行列各表示什么？",
+    "下三角矩阵如何得到前缀平均？",
+    "keepdim=True 为什么重要？",
+    "masked_fill 与 softmax 各做什么？",
+    "为何不能对含 -inf 的 logits 做普通 Dropout？"
+  ],
+  "task": "对 [1,3,7] 实现循环、矩阵、mask+softmax 三版并 allclose。",
+  "allowed_chapters": ["00", "01", "02", "03", "04", "05", "06", "07", "08"],
+  "forbidden_later_terms": ["Query", "Key", "Value"],
+  "rubric": {"minimum_questions": 4, "task_required": true, "later_dependency_allowed": false}
+}

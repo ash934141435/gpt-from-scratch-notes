@@ -1,0 +1,14 @@
+{
+  "chapter": "13",
+  "questions": [
+    "Attention 与 FFN 的职责有何不同？",
+    "C→4C→C 的每一步做什么？",
+    "ReLU 的最低作用是什么？",
+    "残差为何要求分支最终回到 C？",
+    "x+F(x) 如何保留直接梯度路径？"
+  ],
+  "task": "运行 V7/V8，验证 FFN 不混合 token，且零分支时 out=x、grad=1。",
+  "allowed_chapters": ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13"],
+  "forbidden_later_terms": ["LayerNorm", "Pre-Norm", "Dropout"],
+  "rubric": {"minimum_questions": 4, "task_required": true, "later_dependency_allowed": false}
+}

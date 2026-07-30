@@ -1,0 +1,13 @@
+{
+  "chapter": "10",
+  "tester_type": "llm_proxy",
+  "tester": "Codex 受限上下文冷读",
+  "tested_at": "2026-07-29",
+  "scope_enforced": true,
+  "question_results": [true, true, true, true, true],
+  "task_passed": true,
+  "later_dependency": false,
+  "unexplained_terms": [],
+  "resolved_or_optional_terms": [],
+  "notes": "Q/K/V 各自职责和两个 T 的语义无需背公式即可复述。"
+}

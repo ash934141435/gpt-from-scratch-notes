@@ -1,0 +1,14 @@
+{
+  "chapter": "11",
+  "questions": [
+    "因果图中第 t 个位置可读哪些节点？",
+    "mask、位置与 Q/K 内容匹配分别解决什么？",
+    "batch 为何前向隔离但共同贡献梯度？",
+    "self-attention 与 cross-attention 如何按来源区分？",
+    "分数为何除以 √H？"
+  ],
+  "task": "画 T=5 因果图，并对 B=3,Tq=4,Tk=7,H=8 写 cross-attention Shape。",
+  "allowed_chapters": ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11"],
+  "forbidden_later_terms": ["ModuleList", "nanoGPT 合并 QKV"],
+  "rubric": {"minimum_questions": 4, "task_required": true, "later_dependency_allowed": false}
+}

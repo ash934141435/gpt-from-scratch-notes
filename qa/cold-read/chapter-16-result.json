@@ -1,0 +1,13 @@
+{
+  "chapter": "16",
+  "tester_type": "llm_proxy",
+  "tester": "Codex 受限上下文冷读",
+  "tested_at": "2026-07-29",
+  "scope_enforced": true,
+  "question_results": [true, true, true, true, true],
+  "task_passed": true,
+  "later_dependency": false,
+  "unexplained_terms": [],
+  "resolved_or_optional_terms": [],
+  "notes": "原图组件、不同长度 Shape 与 nanoGPT 向量化均可从当前及前章回答。"
+}

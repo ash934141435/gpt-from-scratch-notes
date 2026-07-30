@@ -1,0 +1,13 @@
+version,time,source_commit,file,change,problem_solved,new_capability,artifact_type,status
+V0,00:07:29,83f7d22,bigram.py,读取文本并建立字符词表,原始字符串不能直接进入模型,字符与整数可逆映射,学习快照,已运行验证
+V1,00:17:32,83f7d22,bigram.py,切分训练验证集并构造xy batch,没有监督学习样本,批量生成错位一位的输入目标,学习快照,已运行验证
+V2,00:22:16,83f7d22,bigram.py,加入Bigram查表模型loss与generate,没有可训练预测器,计算词表logits并逐token采样,学习快照,已运行验证
+V3,00:34:57,83f7d22,bigram.py,加入AdamW训练循环和可靠评估,未训练模型只输出乱码,参数可更新且train val loss可比较,学习快照,已运行验证
+V4,00:42:24,视频数学实验,v2.py,用循环、下三角矩阵和mask加softmax实现因果前缀平均,token之间尚无高效因果通信,验证三种前缀聚合写法等价,概念隔离实验,已运行验证
+V5,01:04:41,10024b1,v2.py,加入单头QKV和因果聚合,历史token只能固定平均,按内容选择并聚合历史信息,概念隔离实验,已运行验证
+V6,01:22:18,a6e0bee,v2.py,并行多个注意力头,单头通信视角有限,同时学习多种关系,最小完整模型,已运行验证
+V7,01:24:45,97dd3f9,v2.py,加入FeedForward,通信后没有逐token计算,证明逐token计算不混合时间位置,概念隔离实验,已运行验证
+V8,01:27:55,5c3a2d2,v2.py,加入残差连接,深层网络梯度路径困难,证明恒等前向与梯度直通,概念隔离实验,已运行验证
+V9,01:35:52,0016836,v2.py,加入LayerNorm和PreNorm Block,深层特征分布不稳定,形成完整可堆叠Block,组件快照,已运行验证
+V10,01:38:08,482b15d,v2.py,加入dropout并规模化超参数,模型容量和过拟合控制不足,完成decoder-only GPT训练生成闭环,完整模型,已运行验证
+V11,教材补充,教材选学工程,capstone/V11-capstone-gpt.py,加入固定评估初始化checkpoint恢复和可控采样,V10只适合快速结构验收,完成可保存恢复的训练实验闭环,选学工程,已完成smoke验证

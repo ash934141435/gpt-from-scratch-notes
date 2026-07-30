@@ -1,0 +1,14 @@
+{
+  "chapter": "15",
+  "questions": [
+    "从 token ID 到 logits 的完整模块顺序是什么？",
+    "Dropout 在训练和评估时有何不同？",
+    "Dropout 可安全放在哪些位置？",
+    "B、T、C、头数、层数各影响什么成本？",
+    "为什么 V10 输出不流畅仍可通过结构验收？"
+  ],
+  "task": "运行 V10，记录参数量/loss/生成，并把每个模块指回首次教学章。",
+  "allowed_chapters": ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15"],
+  "forbidden_later_terms": ["checkpoint", "perplexity", "temperature", "top-k"],
+  "rubric": {"minimum_questions": 4, "task_required": true, "later_dependency_allowed": false}
+}

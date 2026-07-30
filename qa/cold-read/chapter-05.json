@@ -1,0 +1,14 @@
+{
+  "chapter": "05",
+  "questions": [
+    "逐 token 生成的五个动作是什么？",
+    "为什么只取最后时间位置？",
+    "softmax、multinomial 和 cat 分别做什么？",
+    "cat 应沿哪个轴？",
+    "未训练模型为什么能运行却输出乱码？"
+  ],
+  "task": "对 B=3,T=7,V=5 写一次与四次生成后的每步 Shape。",
+  "allowed_chapters": ["00", "01", "02", "03", "04", "05"],
+  "forbidden_later_terms": ["temperature", "top-k", "KV cache"],
+  "rubric": {"minimum_questions": 4, "task_required": true, "later_dependency_allowed": false}
+}

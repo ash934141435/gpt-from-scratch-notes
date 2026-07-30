@@ -1,0 +1,14 @@
+{
+  "chapter": "02",
+  "questions": [
+    "字符词表为什么先 set 再 sorted？",
+    "stoi 与 itos 的方向分别是什么？",
+    "token ID 的大小是否表示语义大小？",
+    "词表外字符会触发什么问题？",
+    "字符 token 与 subword 的主要权衡是什么？"
+  ],
+  "task": "为 hello, GPT! 建词表并验证 encode/decode 往返，再解释小写 g 的失败。",
+  "allowed_chapters": ["00", "01", "02"],
+  "forbidden_later_terms": ["Embedding 参数", "BPE 合并算法", "loss"],
+  "rubric": {"minimum_questions": 4, "task_required": true, "later_dependency_allowed": false}
+}

@@ -1,0 +1,14 @@
+{
+  "chapter": "09",
+  "questions": [
+    "V、T、C 分别是什么？",
+    "token ID 怎样变成 [B,T,C]？",
+    "[B,T,C]+[T,C] 如何广播？",
+    "位置表示与因果 mask 有何不同？",
+    "固定平均为何不能按内容选择？"
+  ],
+  "task": "对 B=3,T=5,V=20,C=8 写 token/position/lm_head 全程 Shape 并运行验证。",
+  "allowed_chapters": ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09"],
+  "forbidden_later_terms": ["Query/Key 实现", "RoPE", "权重绑定"],
+  "rubric": {"minimum_questions": 4, "task_required": true, "later_dependency_allowed": false}
+}

@@ -1,0 +1,14 @@
+{
+  "chapter": "00",
+  "questions": [
+    "终端、工作目录和虚拟环境分别解决什么问题？",
+    "张量 Shape [2,3] 表示什么？",
+    "x[:, :2] 会保留哪些位置？",
+    "字典、集合和类各自的最小作用是什么？",
+    "读到 IndexError 时先检查哪两项？"
+  ],
+  "task": "激活环境、运行 V0，并创建 [2,3] 浮点张量后打印 shape、dtype 和最后一列。",
+  "allowed_chapters": ["00"],
+  "forbidden_later_terms": ["Attention", "梯度公式", "矩阵乘法"],
+  "rubric": {"minimum_questions": 4, "task_required": true, "later_dependency_allowed": false}
+}

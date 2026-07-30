@@ -1,0 +1,165 @@
+﻿micro_id,start,end,old_video_chapter,learner_chapter,learner_title,source_mode,boundary_review,review_basis
+M001,00:00:00,00:00:36,01-课程介绍与数据准备,01,我们究竟要构建什么,video,增量核验,timeline+subtitle-coverage+semantic-review；检查滚动字幕跨界归属
+M002,00:00:36,00:01:03,01-课程介绍与数据准备,01,我们究竟要构建什么,video,复用现有人工QA,timeline+semantic-review
+M003,00:01:03,00:01:38,01-课程介绍与数据准备,01,我们究竟要构建什么,video,复用现有人工QA,timeline+semantic-review
+M004,00:01:38,00:02:07,01-课程介绍与数据准备,01,我们究竟要构建什么,video,复用现有人工QA,timeline+semantic-review
+M005,00:02:07,00:02:44,01-课程介绍与数据准备,01,我们究竟要构建什么,video,复用现有人工QA,timeline+semantic-review
+M006,00:02:44,00:03:13,01-课程介绍与数据准备,01,我们究竟要构建什么,video,复用现有人工QA,timeline+semantic-review
+M007,00:03:13,00:03:52,01-课程介绍与数据准备,01,我们究竟要构建什么,video,复用现有人工QA,timeline+semantic-review
+M008,00:03:52,00:04:16,01-课程介绍与数据准备,01,我们究竟要构建什么,video,复用现有人工QA,timeline+semantic-review
+M009,00:04:16,00:05:21,01-课程介绍与数据准备,01,我们究竟要构建什么,video,复用现有人工QA,timeline+semantic-review
+M010,00:05:21,00:06:25,01-课程介绍与数据准备,01,我们究竟要构建什么,video,复用现有人工QA,timeline+semantic-review
+M011,00:06:25,00:07:29,01-课程介绍与数据准备,01,我们究竟要构建什么,video,增量核验,timeline+subtitle-coverage+semantic-review；检查滚动字幕跨界归属
+M012,00:07:29,00:08:34,02-字符编码与训练数据,02,文本如何变成数字,video,增量核验,timeline+subtitle-coverage+semantic-review；检查滚动字幕跨界归属
+M013,00:08:34,00:09:36,02-字符编码与训练数据,02,文本如何变成数字,video,复用现有人工QA,timeline+semantic-review
+M014,00:09:36,00:10:20,02-字符编码与训练数据,02,文本如何变成数字,video,复用现有人工QA,timeline+semantic-review
+M015,00:10:20,00:11:43,02-字符编码与训练数据,02,文本如何变成数字,video,复用现有人工QA,timeline+semantic-review
+M016,00:11:43,00:12:05,02-字符编码与训练数据,02,文本如何变成数字,video,复用现有人工QA,timeline+semantic-review
+M017,00:12:05,00:12:45,02-字符编码与训练数据,02,文本如何变成数字,video,增量核验,timeline+subtitle-coverage+semantic-review；检查滚动字幕跨界归属
+M018,00:12:45,00:13:48,02-字符编码与训练数据,03,如何制作训练题目,video,增量核验,timeline+subtitle-coverage+semantic-review；检查滚动字幕跨界归属
+M019,00:13:48,00:14:50,02-字符编码与训练数据,03,如何制作训练题目,video,复用现有人工QA,timeline+semantic-review
+M020,00:14:50,00:15:26,02-字符编码与训练数据,03,如何制作训练题目,video,复用现有人工QA,timeline+semantic-review
+M021,00:15:26,00:15:52,02-字符编码与训练数据,03,如何制作训练题目,video,复用现有人工QA,timeline+semantic-review
+M022,00:15:52,00:16:30,02-字符编码与训练数据,03,如何制作训练题目,video,复用现有人工QA,timeline+semantic-review
+M023,00:16:30,00:16:56,02-字符编码与训练数据,03,如何制作训练题目,video,复用现有人工QA,timeline+semantic-review
+M024,00:16:56,00:17:32,02-字符编码与训练数据,03,如何制作训练题目,video,复用现有人工QA,timeline+semantic-review
+M025,00:17:32,00:17:58,02-字符编码与训练数据,03,如何制作训练题目,video,复用现有人工QA,timeline+semantic-review
+M026,00:17:58,00:18:44,02-字符编码与训练数据,03,如何制作训练题目,video,复用现有人工QA,timeline+semantic-review
+M027,00:18:44,00:19:28,02-字符编码与训练数据,03,如何制作训练题目,video,复用现有人工QA,timeline+semantic-review
+M028,00:19:28,00:20:10,02-字符编码与训练数据,03,如何制作训练题目,video,复用现有人工QA,timeline+semantic-review
+M029,00:20:10,00:22:16,02-字符编码与训练数据,03,如何制作训练题目,video,增量核验,timeline+subtitle-coverage+semantic-review；检查滚动字幕跨界归属
+M030,00:22:16,00:22:52,03-Bigram语言模型,04,第一个 Bigram 模型,video,增量核验,timeline+subtitle-coverage+semantic-review；检查滚动字幕跨界归属
+M031,00:22:52,00:23:26,03-Bigram语言模型,04,第一个 Bigram 模型,video,复用现有人工QA,timeline+semantic-review
+M032,00:23:26,00:24:10,03-Bigram语言模型,04,第一个 Bigram 模型,video,复用现有人工QA,timeline+semantic-review
+M033,00:24:10,00:24:52,03-Bigram语言模型,04,第一个 Bigram 模型,video,复用现有人工QA,timeline+semantic-review
+M034,00:24:52,00:25:26,03-Bigram语言模型,04,第一个 Bigram 模型,video,复用现有人工QA,timeline+semantic-review
+M035,00:25:26,00:26:02,03-Bigram语言模型,04,第一个 Bigram 模型,video,复用现有人工QA,timeline+semantic-review
+M036,00:26:02,00:26:40,03-Bigram语言模型,04,第一个 Bigram 模型,video,复用现有人工QA,timeline+semantic-review
+M037,00:26:40,00:27:15,03-Bigram语言模型,04,第一个 Bigram 模型,video,复用现有人工QA,timeline+semantic-review
+M038,00:27:15,00:27:54,03-Bigram语言模型,04,第一个 Bigram 模型,video,复用现有人工QA,timeline+semantic-review
+M039,00:27:54,00:28:37,03-Bigram语言模型,04,第一个 Bigram 模型,video,增量核验,timeline+subtitle-coverage+semantic-review；检查滚动字幕跨界归属
+M040,00:28:37,00:29:14,03-Bigram语言模型,05,逐 token 生成,video,增量核验,timeline+subtitle-coverage+semantic-review；检查滚动字幕跨界归属
+M041,00:29:14,00:29:56,03-Bigram语言模型,05,逐 token 生成,video,复用现有人工QA,timeline+semantic-review
+M042,00:29:56,00:30:36,03-Bigram语言模型,05,逐 token 生成,video,复用现有人工QA,timeline+semantic-review
+M043,00:30:36,00:31:15,03-Bigram语言模型,05,逐 token 生成,video,复用现有人工QA,timeline+semantic-review
+M044,00:31:15,00:31:54,03-Bigram语言模型,05,逐 token 生成,video,复用现有人工QA,timeline+semantic-review
+M045,00:31:54,00:32:32,03-Bigram语言模型,05,逐 token 生成,video,复用现有人工QA,timeline+semantic-review
+M046,00:32:32,00:33:12,03-Bigram语言模型,05,逐 token 生成,video,复用现有人工QA,timeline+semantic-review
+M047,00:33:12,00:34:57,03-Bigram语言模型,05,逐 token 生成,video,增量核验,timeline+subtitle-coverage+semantic-review；检查滚动字幕跨界归属
+M048,00:34:57,00:35:34,04-训练循环与模型评估,06,模型如何学习,video,增量核验,timeline+subtitle-coverage+semantic-review；检查滚动字幕跨界归属
+M049,00:35:34,00:36:16,04-训练循环与模型评估,06,模型如何学习,video,复用现有人工QA,timeline+semantic-review
+M050,00:36:16,00:36:58,04-训练循环与模型评估,06,模型如何学习,video,复用现有人工QA,timeline+semantic-review
+M051,00:36:58,00:38:08,04-训练循环与模型评估,06,模型如何学习,video,复用现有人工QA,timeline+semantic-review
+M052,00:38:08,00:39:02,04-训练循环与模型评估,06,模型如何学习,video,复用现有人工QA,timeline+semantic-review
+M053,00:39:02,00:40:34,04-训练循环与模型评估,06,模型如何学习,video,复用现有人工QA,timeline+semantic-review
+M054,00:40:34,00:41:20,04-训练循环与模型评估,06,模型如何学习,video,复用现有人工QA,timeline+semantic-review
+M055,00:41:20,00:42:24,04-训练循环与模型评估,06,模型如何学习,video,增量核验,timeline+subtitle-coverage+semantic-review；检查滚动字幕跨界归属
+M056,00:42:24,00:43:02,05-Self-Attention,07,为什么 token 需要交流,video,增量核验,timeline+subtitle-coverage+semantic-review；检查滚动字幕跨界归属
+M057,00:43:02,00:43:50,05-Self-Attention,07,为什么 token 需要交流,video,复用现有人工QA,timeline+semantic-review
+M058,00:43:50,00:44:42,05-Self-Attention,07,为什么 token 需要交流,video,复用现有人工QA,timeline+semantic-review
+M059,00:44:42,00:45:28,05-Self-Attention,07,为什么 token 需要交流,video,复用现有人工QA,timeline+semantic-review
+M060,00:45:28,00:46:12,05-Self-Attention,07,为什么 token 需要交流,video,复用现有人工QA,timeline+semantic-review
+M061,00:46:12,00:47:03,05-Self-Attention,07,为什么 token 需要交流,video,增量核验,timeline+subtitle-coverage+semantic-review；检查滚动字幕跨界归属
+M062,00:47:03,00:47:48,05-Self-Attention,08,矩阵乘法与因果 Mask,video,增量核验,timeline+subtitle-coverage+semantic-review；检查滚动字幕跨界归属
+M063,00:47:48,00:48:38,05-Self-Attention,08,矩阵乘法与因果 Mask,video,复用现有人工QA,timeline+semantic-review
+M064,00:48:38,00:49:32,05-Self-Attention,08,矩阵乘法与因果 Mask,video,复用现有人工QA,timeline+semantic-review
+M065,00:49:32,00:50:28,05-Self-Attention,08,矩阵乘法与因果 Mask,video,复用现有人工QA,timeline+semantic-review
+M066,00:50:28,00:51:22,05-Self-Attention,08,矩阵乘法与因果 Mask,video,复用现有人工QA,timeline+semantic-review
+M067,00:51:22,00:52:50,05-Self-Attention,08,矩阵乘法与因果 Mask,video,复用现有人工QA,timeline+semantic-review
+M068,00:52:50,00:53:45,05-Self-Attention,08,矩阵乘法与因果 Mask,video,复用现有人工QA,timeline+semantic-review
+M069,00:53:45,00:54:25,05-Self-Attention,08,矩阵乘法与因果 Mask,video,复用现有人工QA,timeline+semantic-review
+M070,00:54:25,00:54:48,05-Self-Attention,08,矩阵乘法与因果 Mask,video,复用现有人工QA,timeline+semantic-review
+M071,00:54:48,00:55:34,05-Self-Attention,08,矩阵乘法与因果 Mask,video,复用现有人工QA,timeline+semantic-review
+M072,00:55:34,00:56:18,05-Self-Attention,08,矩阵乘法与因果 Mask,video,复用现有人工QA,timeline+semantic-review
+M073,00:56:18,00:56:58,05-Self-Attention,08,矩阵乘法与因果 Mask,video,复用现有人工QA,timeline+semantic-review
+M074,00:56:58,00:57:45,05-Self-Attention,08,矩阵乘法与因果 Mask,video,复用现有人工QA,timeline+semantic-review
+M075,00:57:45,00:58:05,05-Self-Attention,08,矩阵乘法与因果 Mask,video,复用现有人工QA,timeline+semantic-review
+M076,00:58:05,00:58:17,05-Self-Attention,08,矩阵乘法与因果 Mask,video,增量核验,timeline+subtitle-coverage+semantic-review；检查滚动字幕跨界归属
+M077,00:58:17,00:59:21,05-Self-Attention,09,Embedding 与位置,video,增量核验,timeline+subtitle-coverage+semantic-review；检查滚动字幕跨界归属
+M078,00:59:21,01:00:00,05-Self-Attention,09,Embedding 与位置,video,复用现有人工QA,timeline+semantic-review
+M079,01:00:00,01:00:23,05-Self-Attention,09,Embedding 与位置,video,复用现有人工QA,timeline+semantic-review
+M080,01:00:23,01:01:05,05-Self-Attention,09,Embedding 与位置,video,复用现有人工QA,timeline+semantic-review
+M081,01:01:05,01:01:26,05-Self-Attention,09,Embedding 与位置,video,复用现有人工QA,timeline+semantic-review
+M082,01:01:26,01:02:02,05-Self-Attention,09,Embedding 与位置,video,复用现有人工QA,timeline+semantic-review
+M083,01:02:02,01:02:28,05-Self-Attention,09,Embedding 与位置,video,复用现有人工QA,timeline+semantic-review
+M084,01:02:28,01:03:36,05-Self-Attention,09,Embedding 与位置,video,复用现有人工QA,timeline+semantic-review
+M085,01:03:36,01:04:41,05-Self-Attention,09,Embedding 与位置,video,增量核验,timeline+subtitle-coverage+semantic-review；检查滚动字幕跨界归属
+M086,01:04:41,01:05:21,05-Self-Attention,10,单头 Self-Attention,video,增量核验,timeline+subtitle-coverage+semantic-review；检查滚动字幕跨界归属
+M087,01:05:21,01:06:03,05-Self-Attention,10,单头 Self-Attention,video,复用现有人工QA,timeline+semantic-review
+M088,01:06:03,01:06:53,05-Self-Attention,10,单头 Self-Attention,video,复用现有人工QA,timeline+semantic-review
+M089,01:06:53,01:07:44,05-Self-Attention,10,单头 Self-Attention,video,复用现有人工QA,timeline+semantic-review
+M090,01:07:44,01:08:51,05-Self-Attention,10,单头 Self-Attention,video,复用现有人工QA,timeline+semantic-review
+M091,01:08:51,01:09:24,05-Self-Attention,10,单头 Self-Attention,video,复用现有人工QA,timeline+semantic-review
+M092,01:09:24,01:10:04,05-Self-Attention,10,单头 Self-Attention,video,复用现有人工QA,timeline+semantic-review
+M093,01:10:04,01:11:08,05-Self-Attention,10,单头 Self-Attention,video,增量核验,timeline+subtitle-coverage+semantic-review；检查滚动字幕跨界归属
+M094,01:11:08,01:12:09,05-Self-Attention,11,Attention 的规则和缩放,video,增量核验,timeline+subtitle-coverage+semantic-review；检查滚动字幕跨界归属
+M095,01:12:09,01:13:11,05-Self-Attention,11,Attention 的规则和缩放,video,复用现有人工QA,timeline+semantic-review
+M096,01:13:11,01:14:15,05-Self-Attention,11,Attention 的规则和缩放,video,复用现有人工QA,timeline+semantic-review
+M097,01:14:15,01:15:19,05-Self-Attention,11,Attention 的规则和缩放,video,复用现有人工QA,timeline+semantic-review
+M098,01:15:19,01:16:23,05-Self-Attention,11,Attention 的规则和缩放,video,复用现有人工QA,timeline+semantic-review
+M099,01:16:23,01:17:18,05-Self-Attention,11,Attention 的规则和缩放,video,复用现有人工QA,timeline+semantic-review
+M100,01:17:18,01:18:18,05-Self-Attention,11,Attention 的规则和缩放,video,复用现有人工QA,timeline+semantic-review
+M101,01:18:18,01:19:13,05-Self-Attention,11,Attention 的规则和缩放,video,增量核验,timeline+subtitle-coverage+semantic-review；检查滚动字幕跨界归属
+M102,01:19:13,01:20:17,06-Multi-Head-Attention,12,Multi-Head Attention,video,增量核验,timeline+subtitle-coverage+semantic-review；检查滚动字幕跨界归属
+M103,01:20:17,01:20:51,06-Multi-Head-Attention,12,Multi-Head Attention,video,复用现有人工QA,timeline+semantic-review
+M104,01:20:51,01:21:37,06-Multi-Head-Attention,12,Multi-Head Attention,video,复用现有人工QA,timeline+semantic-review
+M105,01:21:37,01:22:18,06-Multi-Head-Attention,12,Multi-Head Attention,video,复用现有人工QA,timeline+semantic-review
+M106,01:22:18,01:23:03,06-Multi-Head-Attention,12,Multi-Head Attention,video,复用现有人工QA,timeline+semantic-review
+M107,01:23:03,01:23:46,06-Multi-Head-Attention,12,Multi-Head Attention,video,复用现有人工QA,timeline+semantic-review
+M108,01:23:46,01:24:45,06-Multi-Head-Attention,12,Multi-Head Attention,video,增量核验,timeline+subtitle-coverage+semantic-review；检查滚动字幕跨界归属
+M109,01:24:45,01:25:28,07-Transformer-Block,13,FeedForward、Block 与残差,video,增量核验,timeline+subtitle-coverage+semantic-review；检查滚动字幕跨界归属
+M110,01:25:28,01:26:12,07-Transformer-Block,13,FeedForward、Block 与残差,video,复用现有人工QA,timeline+semantic-review
+M111,01:26:12,01:26:53,07-Transformer-Block,13,FeedForward、Block 与残差,video,复用现有人工QA,timeline+semantic-review
+M112,01:26:53,01:27:28,07-Transformer-Block,13,FeedForward、Block 与残差,video,复用现有人工QA,timeline+semantic-review
+M113,01:27:28,01:27:55,07-Transformer-Block,13,FeedForward、Block 与残差,video,复用现有人工QA,timeline+semantic-review
+M114,01:27:55,01:28:34,07-Transformer-Block,13,FeedForward、Block 与残差,video,复用现有人工QA,timeline+semantic-review
+M115,01:28:34,01:29:14,07-Transformer-Block,13,FeedForward、Block 与残差,video,复用现有人工QA,timeline+semantic-review
+M116,01:29:14,01:29:52,07-Transformer-Block,13,FeedForward、Block 与残差,video,复用现有人工QA,timeline+semantic-review
+M117,01:29:52,01:30:30,07-Transformer-Block,13,FeedForward、Block 与残差,video,复用现有人工QA,timeline+semantic-review
+M118,01:30:30,01:31:10,07-Transformer-Block,13,FeedForward、Block 与残差,video,复用现有人工QA,timeline+semantic-review
+M119,01:31:10,01:32:08,07-Transformer-Block,13,FeedForward、Block 与残差,video,复用现有人工QA,timeline+semantic-review
+M120,01:32:08,01:32:44,07-Transformer-Block,13,FeedForward、Block 与残差,video,增量核验,timeline+subtitle-coverage+semantic-review；检查滚动字幕跨界归属
+M121,01:32:44,01:33:20,07-Transformer-Block,14,LayerNorm 与 Pre-Norm,video,增量核验,timeline+subtitle-coverage+semantic-review；检查滚动字幕跨界归属
+M122,01:33:20,01:33:58,07-Transformer-Block,14,LayerNorm 与 Pre-Norm,video,复用现有人工QA,timeline+semantic-review
+M123,01:33:58,01:34:36,07-Transformer-Block,14,LayerNorm 与 Pre-Norm,video,复用现有人工QA,timeline+semantic-review
+M124,01:34:36,01:35:14,07-Transformer-Block,14,LayerNorm 与 Pre-Norm,video,复用现有人工QA,timeline+semantic-review
+M125,01:35:14,01:35:52,07-Transformer-Block,14,LayerNorm 与 Pre-Norm,video,复用现有人工QA,timeline+semantic-review
+M126,01:35:52,01:36:23,07-Transformer-Block,14,LayerNorm 与 Pre-Norm,video,复用现有人工QA,timeline+semantic-review
+M127,01:36:23,01:36:54,07-Transformer-Block,14,LayerNorm 与 Pre-Norm,video,复用现有人工QA,timeline+semantic-review
+M128,01:36:54,01:37:49,07-Transformer-Block,14,LayerNorm 与 Pre-Norm,video,增量核验,timeline+subtitle-coverage+semantic-review；检查滚动字幕跨界归属
+M129,01:37:49,01:38:08,08-完整GPT训练与生成,15,完整 GPT 的组装与查漏补缺,video,增量核验,timeline+subtitle-coverage+semantic-review；检查滚动字幕跨界归属
+M130,01:38:08,01:38:30,08-完整GPT训练与生成,15,完整 GPT 的组装与查漏补缺,video,复用现有人工QA,timeline+semantic-review
+M131,01:38:30,01:39:06,08-完整GPT训练与生成,15,完整 GPT 的组装与查漏补缺,video,复用现有人工QA,timeline+semantic-review
+M132,01:39:06,01:39:34,08-完整GPT训练与生成,15,完整 GPT 的组装与查漏补缺,video,复用现有人工QA,timeline+semantic-review
+M133,01:39:34,01:40:04,08-完整GPT训练与生成,15,完整 GPT 的组装与查漏补缺,video,复用现有人工QA,timeline+semantic-review
+M134,01:40:04,01:40:37,08-完整GPT训练与生成,15,完整 GPT 的组装与查漏补缺,video,复用现有人工QA,timeline+semantic-review
+M135,01:40:37,01:41:16,08-完整GPT训练与生成,15,完整 GPT 的组装与查漏补缺,video,复用现有人工QA,timeline+semantic-review
+M136,01:41:16,01:42:43,08-完整GPT训练与生成,15,完整 GPT 的组装与查漏补缺,video,增量核验,timeline+subtitle-coverage+semantic-review；检查滚动字幕跨界归属
+M137,01:42:43,01:43:20,09-GPT与ChatGPT,16,Decoder-Only、原始 Transformer 与 nanoGPT,video,增量核验,timeline+subtitle-coverage+semantic-review；检查滚动字幕跨界归属
+M138,01:43:20,01:43:45,09-GPT与ChatGPT,16,Decoder-Only、原始 Transformer 与 nanoGPT,video,复用现有人工QA,timeline+semantic-review
+M139,01:43:45,01:44:22,09-GPT与ChatGPT,16,Decoder-Only、原始 Transformer 与 nanoGPT,video,复用现有人工QA,timeline+semantic-review
+M140,01:44:22,01:44:50,09-GPT与ChatGPT,16,Decoder-Only、原始 Transformer 与 nanoGPT,video,复用现有人工QA,timeline+semantic-review
+M141,01:44:50,01:45:26,09-GPT与ChatGPT,16,Decoder-Only、原始 Transformer 与 nanoGPT,video,复用现有人工QA,timeline+semantic-review
+M142,01:45:26,01:45:53,09-GPT与ChatGPT,16,Decoder-Only、原始 Transformer 与 nanoGPT,video,复用现有人工QA,timeline+semantic-review
+M143,01:45:53,01:46:26,09-GPT与ChatGPT,16,Decoder-Only、原始 Transformer 与 nanoGPT,video,复用现有人工QA,timeline+semantic-review
+M144,01:46:26,01:46:56,09-GPT与ChatGPT,16,Decoder-Only、原始 Transformer 与 nanoGPT,video,复用现有人工QA,timeline+semantic-review
+M145,01:46:56,01:47:28,09-GPT与ChatGPT,16,Decoder-Only、原始 Transformer 与 nanoGPT,video,复用现有人工QA,timeline+semantic-review
+M146,01:47:28,01:47:59,09-GPT与ChatGPT,16,Decoder-Only、原始 Transformer 与 nanoGPT,video,复用现有人工QA,timeline+semantic-review
+M147,01:47:59,01:48:30,09-GPT与ChatGPT,16,Decoder-Only、原始 Transformer 与 nanoGPT,video,复用现有人工QA,timeline+semantic-review
+M148,01:48:30,01:49:00,09-GPT与ChatGPT,16,Decoder-Only、原始 Transformer 与 nanoGPT,video,增量核验,timeline+subtitle-coverage+semantic-review；检查滚动字幕跨界归属
+M149,01:49:00,01:49:32,09-GPT与ChatGPT,17,从预训练到 ChatGPT 式助手,video,增量核验,timeline+subtitle-coverage+semantic-review；检查滚动字幕跨界归属
+M150,01:49:32,01:50:03,09-GPT与ChatGPT,17,从预训练到 ChatGPT 式助手,video,复用现有人工QA,timeline+semantic-review
+M151,01:50:03,01:50:34,09-GPT与ChatGPT,17,从预训练到 ChatGPT 式助手,video,复用现有人工QA,timeline+semantic-review
+M152,01:50:34,01:51:06,09-GPT与ChatGPT,17,从预训练到 ChatGPT 式助手,video,复用现有人工QA,timeline+semantic-review
+M153,01:51:06,01:51:38,09-GPT与ChatGPT,17,从预训练到 ChatGPT 式助手,video,复用现有人工QA,timeline+semantic-review
+M154,01:51:38,01:52:08,09-GPT与ChatGPT,17,从预训练到 ChatGPT 式助手,video,复用现有人工QA,timeline+semantic-review
+M155,01:52:08,01:52:38,09-GPT与ChatGPT,17,从预训练到 ChatGPT 式助手,video,复用现有人工QA,timeline+semantic-review
+M156,01:52:38,01:53:11,09-GPT与ChatGPT,17,从预训练到 ChatGPT 式助手,video,复用现有人工QA,timeline+semantic-review
+M157,01:53:11,01:53:42,09-GPT与ChatGPT,17,从预训练到 ChatGPT 式助手,video,复用现有人工QA,timeline+semantic-review
+M158,01:53:42,01:54:14,09-GPT与ChatGPT,17,从预训练到 ChatGPT 式助手,video,复用现有人工QA,timeline+semantic-review
+M159,01:54:14,01:54:46,09-GPT与ChatGPT,17,从预训练到 ChatGPT 式助手,video,复用现有人工QA,timeline+semantic-review
+M160,01:54:46,01:55:19,09-GPT与ChatGPT,17,从预训练到 ChatGPT 式助手,video,复用现有人工QA,timeline+semantic-review
+M161,01:55:19,01:55:42,09-GPT与ChatGPT,17,从预训练到 ChatGPT 式助手,video,复用现有人工QA,timeline+semantic-review
+M162,01:55:42,01:56:02,09-GPT与ChatGPT,17,从预训练到 ChatGPT 式助手,video,复用现有人工QA,timeline+semantic-review
+M163,01:56:02,01:56:15,09-GPT与ChatGPT,17,从预训练到 ChatGPT 式助手,video,复用现有人工QA,timeline+semantic-review
+M164,01:56:15,01:56:20,09-GPT与ChatGPT,17,从预训练到 ChatGPT 式助手,video,增量核验,timeline+subtitle-coverage+semantic-review；检查滚动字幕跨界归属

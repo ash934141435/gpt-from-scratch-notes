@@ -1,0 +1,14 @@
+{
+  "chapter": "06",
+  "questions": [
+    "一次参数更新的五步顺序是什么？",
+    "梯度和学习率可怎样直观理解？",
+    "为什么每步要清梯度？",
+    "train/eval 与 no_grad 有何不同？",
+    "为什么评估多个 batch？"
+  ],
+  "task": "运行 V3，记录 loss，并验证一次更新前后参数数值改变而 Shape 不变。",
+  "allowed_chapters": ["00", "01", "02", "03", "04", "05", "06"],
+  "forbidden_later_terms": ["链式法则证明", "混合精度", "分布式训练"],
+  "rubric": {"minimum_questions": 4, "task_required": true, "later_dependency_allowed": false}
+}

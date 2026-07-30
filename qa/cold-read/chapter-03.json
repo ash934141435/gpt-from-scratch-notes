@@ -1,0 +1,14 @@
+{
+  "chapter": "03",
+  "questions": [
+    "训练集和验证集职责有何不同？",
+    "为什么 block_size=4 时先取 5 个 token？",
+    "x 与 y 如何错位？",
+    "B 和 T 分别表示什么？",
+    "batch 行为何前向隔离却共同形成一次更新？"
+  ],
+  "task": "从给定 10 个数字构造三行 [B,T] 输入目标，并列出一行的四道上下文题。",
+  "allowed_chapters": ["00", "01", "02", "03"],
+  "forbidden_later_terms": ["optimizer", "梯度计算", "Attention"],
+  "rubric": {"minimum_questions": 4, "task_required": true, "later_dependency_allowed": false}
+}

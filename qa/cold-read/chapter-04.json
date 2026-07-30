@@ -1,0 +1,14 @@
+{
+  "chapter": "04",
+  "questions": [
+    "Bigram 查表的行和列分别代表什么？",
+    "nn.Module 与参数的最低作用是什么？",
+    "logits 与概率有什么区别？",
+    "为何将 [B,T,V] 展平为 [B×T,V]？",
+    "ln(V) 为什么是均匀随机基线？"
+  ],
+  "task": "对 B=2,T=3,V=4 写全 Shape，并运行 Embedding(4,4) 计算随机 loss。",
+  "allowed_chapters": ["00", "01", "02", "03", "04"],
+  "forbidden_later_terms": ["backward", "AdamW", "Q/K/V"],
+  "rubric": {"minimum_questions": 4, "task_required": true, "later_dependency_allowed": false}
+}

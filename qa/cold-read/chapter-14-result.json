@@ -1,0 +1,13 @@
+{
+  "chapter": "14",
+  "tester_type": "llm_proxy",
+  "tester": "Codex 受限上下文冷读",
+  "tested_at": "2026-07-29",
+  "scope_enforced": true,
+  "question_results": [true, true, true, true, true],
+  "task_passed": true,
+  "later_dependency": false,
+  "unexplained_terms": [],
+  "resolved_or_optional_terms": [],
+  "notes": "统计轴、公式和 pre/post 数据流均在当前章定义。"
+}

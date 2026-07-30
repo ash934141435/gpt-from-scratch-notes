@@ -1,0 +1,14 @@
+{
+  "chapter": "01",
+  "questions": [
+    "语言模型的逐 token 续写目标是什么？",
+    "为什么同一前文可能得到不同续写？",
+    "Transformer、GPT 与 ChatGPT 有何区别？",
+    "Tiny Shakespeare 在课程里承担什么角色？",
+    "本课程明确不会复现什么？"
+  ],
+  "task": "为一句前文列三个下一字符候选，并写出课程会做/不会做各两项。",
+  "allowed_chapters": ["00", "01"],
+  "forbidden_later_terms": ["softmax", "cross-entropy", "Self-Attention"],
+  "rubric": {"minimum_questions": 4, "task_required": true, "later_dependency_allowed": false}
+}

@@ -1,0 +1,14 @@
+{
+  "chapter": "16",
+  "questions": [
+    "Encoder、Decoder 和 Cross-Attention 各读什么？",
+    "为什么 Encoder 通常不使用因果 mask？",
+    "源长与目标长不同的权重 Shape 是什么？",
+    "GPT 怎样让 prompt 与输出使用同一 token 流？",
+    "nanoGPT 合并 QKV/四维头与课堂版如何对应？"
+  ],
+  "task": "对 B=2,T_target=6,T_source=9,H=8 写 Cross-Attention Shape，并映射课堂多头到四维实现。",
+  "allowed_chapters": ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16"],
+  "forbidden_later_terms": ["SFT", "奖励模型", "PPO"],
+  "rubric": {"minimum_questions": 4, "task_required": true, "later_dependency_allowed": false}
+}

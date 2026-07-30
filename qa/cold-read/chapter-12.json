@@ -1,0 +1,14 @@
+{
+  "chapter": "12",
+  "questions": [
+    "C=32、4 头时每头 H 是多少？",
+    "多个头在哪里并行、在哪里拼接？",
+    "ModuleList 与普通 list 有何差别？",
+    "为什么 tril 注册为 buffer？",
+    "生成上下文应裁剪哪个轴？"
+  ],
+  "task": "运行 V6，核对 4×[B,T,8]→[B,T,32]，并比较 cat 与 stack 的 Shape。",
+  "allowed_chapters": ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"],
+  "forbidden_later_terms": ["FFN", "残差", "合并 QKV"],
+  "rubric": {"minimum_questions": 4, "task_required": true, "later_dependency_allowed": false}
+}

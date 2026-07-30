@@ -1,0 +1,27 @@
+term,first_chapter,definition_evidence,status
+张量,00,张量可以理解为,已在首次教学使用处定义
+Shape,00,Shape 是,已在首次教学使用处定义
+类,00,类是一张,已在首次教学使用处定义
+token,01,token 是模型一次处理的文本单位,已在首次教学使用处定义
+语言模型,01,根据前文给下一个 token 打分,已在首次教学使用处定义
+Transformer,01,让不同位置的信息交流并进行计算,已在首次教学使用处定义
+词表,02,词表想成通讯录,已在首次教学使用处定义
+Embedding,04,可学习表,已在首次教学使用处定义
+logits,04,原始分数叫 logits,已在首次教学使用处定义
+cross-entropy,04,单题 loss = -ln,已在首次教学使用处定义
+梯度,06,梯度就是局部坡向信息,已在首次教学使用处定义
+optimizer,06,optimizer 是决定怎样结合这些信息迈步的规则,已在首次教学使用处定义
+因果 mask,08,mask 把“哪些连接允许存在”,已在首次教学使用处定义
+广播,08,触发广播：每一行除以自己的行和,已在首次教学使用处定义
+位置表示,09,同时携带“我是谁”和“我在哪里”,已在首次教学使用处定义
+Query/Key/Value,10,Query（查询）,已在首次教学使用处定义
+Self-Attention,10,Self-Attention 的 “self” 表示,已在首次教学使用处定义
+Cross-Attention,11,Q 来自 decoder，K/V 来自 encoder,已在首次教学使用处定义
+Multi-Head Attention,12,多头像四位读者并行阅读,已在首次教学使用处定义
+FeedForward,13,各自思考：每位学生单独加工自己的笔记,已在首次教学使用处定义
+残差连接,13,新结果是 `原笔记 + 加工建议`,已在首次教学使用处定义
+LayerNorm,14,LayerNorm 对每个 token 自己的 C 个特征,已在首次教学使用处定义
+Dropout,15,Dropout 像训练时随机让部分支路贡献暂时归零,已在首次教学使用处定义
+decoder-only,16,它不需要独立 Encoder 和 Cross-Attention,已在首次教学使用处定义
+SFT,17,用理想输入—回答示范继续做 token 预测,已在首次教学使用处定义
+PPO,17,一种强化学习优化方法,已在首次教学使用处定义

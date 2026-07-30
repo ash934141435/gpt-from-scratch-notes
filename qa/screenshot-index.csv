@@ -1,0 +1,18 @@
+﻿image_file,timestamp,micro_id,type,focus,cropped,used_in_text,learner_chapter,learner_section,used_in_new_text,evidence_role
+01-课程介绍与数据准备/assets/crops/00-05-15-generated-preview.png,00:05:15,M009,终端输出,字符级模型生成结果,是,是,01,视频关键片段与画面,是,正文视频证据
+05-Self-Attention/assets/crops/01-05-34-qk-shapes.png,01:05:34,M087,代码,key和query的shape注释,是,否,10,视频关键片段与画面,是,正文视频证据
+02-字符编码与训练数据/assets/crops/00-08-58-vocabulary.png,00:08:58,M013,代码与输出,字符词表与词表大小,是,是,02,视频关键片段与画面,是,正文视频证据
+02-字符编码与训练数据/assets/crops/00-13-30-data-tensor-output.png,00:13:30,M018,代码与输出,全文long tensor的shape与内容,是,是,03,视频关键片段与画面,是,正文视频证据
+03-Bigram语言模型/assets/crops/00-22-35-bigram-goal.png,00:22:35,M030,代码,Bigram第一版结构,是,是,04,视频关键片段与画面,是,正文视频证据
+03-Bigram语言模型/assets/crops/00-30-20-last-time-step.png,00:30:20,M042,代码,logits最后时间位置,是,是,05,视频关键片段与画面,是,正文视频证据
+04-训练循环与模型评估/assets/crops/00-35-55-training-loop.png,00:35:55,M049,代码,训练循环五个动作,是,是,06,视频关键片段与画面,是,正文视频证据
+05-Self-Attention/assets/crops/00-42-40-token-communication.png,00:42:40,M056,代码,BTC玩具张量,是,是,07,视频关键片段与画面,是,正文视频证据
+05-Self-Attention/assets/crops/00-47-30-tril-code.png,00:47:30,M062,代码与输出,矩阵乘法玩具例子,是,是,08,视频关键片段与画面,是,正文视频证据
+05-Self-Attention/assets/crops/01-00-45-position-table.png,01:00:45,M080,代码,position embedding table,是,是,09,视频关键片段与画面,是,正文视频证据
+05-Self-Attention/assets/crops/01-12-40-autoregressive-graph.png,01:12:40,M095,概念图,自回归有向图,是,是,11,视频关键片段与画面,是,正文视频证据
+06-Multi-Head-Attention/assets/crops/01-23-40-four-heads.png,01:23:40,M107,代码与shape,四个八维头,是,是,12,视频关键片段与画面,是,正文视频证据
+07-Transformer-Block/assets/crops/01-29-30-residual-diagram.png,01:29:30,M116,概念图,残差主干与分支,是,是,13,视频关键片段与画面,是,正文视频证据
+07-Transformer-Block/assets/crops/01-34-15-layernorm-rows.png,01:34:15,M123,代码与输出,LayerNorm按行统计,是,是,14,视频关键片段与画面,是,正文视频证据
+08-完整GPT训练与生成/assets/crops/01-39-48-scaled-hyperparameters.png,01:39:48,M133,代码与参数,最终规模超参数,是,是,15,视频关键片段与画面,是,正文视频证据
+09-GPT与ChatGPT/assets/crops/01-42-55-decoder-only.png,01:42:55,M137,架构图,decoder only定位,是,是,16,视频关键片段与画面,是,正文视频证据
+09-GPT与ChatGPT/assets/crops/01-49-18-pretrain-finetune.png,01:49:18,M149,流程,预训练微调阶段,是,是,17,视频关键片段与画面,是,正文视频证据
